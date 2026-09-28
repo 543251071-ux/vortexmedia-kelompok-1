@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('komputer', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tb_komputer', function (Blueprint $table) {
+            $table->id('id_komputer'); // INT AUTO_INCREMENT PRIMARY KEY
+            $table->integer('nomor_komputer');
+            $table->string('spek_komputer', 255);
+            $table->enum('status_komputer', ['dipakai', 'kosong', 'dipesan', 'maintenance']);
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('komputer');
+        Schema::dropIfExists('tb_komputer');
     }
 };

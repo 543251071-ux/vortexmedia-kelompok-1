@@ -11,10 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pemesanan', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        Schema::create('tb_pembayaran', function (Blueprint $table) {
+        $table->id(); // INT AUTO_INCREMENT PRIMARY KEY
+        $table->unsignedBigInteger('id_pemesanan'); // Foreign key ke tb_pemesanan
+        $table->integer('id_transaksi');
+        $table->integer('nominal'); // Disesuaikan menjadi integer (sesuai nominal di tb_pemesanan)
+        $table->enum('status_pembayaran', ['pending', 'settlement', 'expire', 'cancel']);
+        $table->timestamp('dibayar_pada');
+        $table->string('kode_qris', 255);
+        $table->timestamps();
+
+        // Foreign Key Constraint
+        $table->foreign('id_pemesanan')->references('id_pemesanan')->on('tb_pemesanan')->onDelete('cascade');
+    });
     }
 
     /**

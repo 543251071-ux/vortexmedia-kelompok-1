@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        Schema::create('tb_user', function (Blueprint $table) {
+        $table->id('id_user'); // INT AUTO_INCREMENT PRIMARY KEY
+        $table->string('nama', 40); 
+        $table->string('nomor_telepon', 20); // Menggunakan string untuk nomor telepon
+        $table->string('email', 40);
+        $table->string('password', 255); // Ukuran 255 disarankan untuk hash password
+        $table->timestamps();
+});
     }
 
     /**
