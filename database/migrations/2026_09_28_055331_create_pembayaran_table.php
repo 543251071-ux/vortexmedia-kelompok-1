@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
        Schema::create('tb_pemesanan', function (Blueprint $table) {
-        $table->id('id_pemesanan'); // INT AUTO_INCREMENT PRIMARY KEY
+        $table->increments('id_pemesanan'); // INT AUTO_INCREMENT PRIMARY KEY
         $table->integer('kode_pemesanan');
-        $table->unsignedBigInteger('id_user'); // Foreign key ke tb_user
-        $table->unsignedBigInteger('computer_id'); // Foreign key ke tb_komputer
+        $table->unsignedInteger('id_user'); // Foreign key ke tb_user
+        $table->unsignedInteger('computer_id'); // Foreign key ke tb_komputer
         $table->date('tanggal_pemesanan');
         $table->time('waktu_mulai');
         $table->integer('lama_pemesanan');
