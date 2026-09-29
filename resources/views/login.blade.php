@@ -14,6 +14,7 @@
     <title>Login Page</title>
 </head>
 <body>
+<<<<<<< HEAD
     <div class="login-card">
         <img src="asset/logo.png" alt="Gambar Logo">
 
@@ -48,5 +49,8 @@
 
         <script src="js/login.js"></script>
     </div>
+=======
+    tes
+>>>>>>> f111bd6d37cb677d8e42f9710d88e4223fe408a6
 </body>
 </html>
