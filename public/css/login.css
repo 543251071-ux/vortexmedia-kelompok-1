@@ -151,7 +151,7 @@ label {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* .login-card .signup-text {
+ .login-card .signup-text {
     color: rgba(255, 255, 255, 0.8);
     font-family: 'Poppins', sans-serif;
     font-size: 13px;
@@ -167,4 +167,4 @@ label {
 
 .login-card .signup-text a:hover {
     text-decoration: underline;
-} */
+} 
