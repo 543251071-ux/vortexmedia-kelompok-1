@@ -13,7 +13,6 @@ return new class extends Migration
     {
        Schema::create('tb_pemesanan', function (Blueprint $table) {
         $table->increments('id_pemesanan'); // INT AUTO_INCREMENT PRIMARY KEY
-        $table->integer('kode_pemesanan');
         $table->unsignedInteger('id_user'); // Foreign key ke tb_user
         $table->unsignedInteger('computer_id'); // Foreign key ke tb_komputer
         $table->date('tanggal_pemesanan');

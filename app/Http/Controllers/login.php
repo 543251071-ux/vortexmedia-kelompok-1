@@ -21,10 +21,12 @@ class Login extends Controller
         ]);
 
         // 1. Cari user di tb_user berdasarkan email
-        $user = User::where('email', $request->email)->first();
+        $user = User::get()->first(function ($u) use ($request) {
+            return trim($u->email) === trim($request->email);
+        });
 
         // 2. Verifikasi password langsung (plain text)
-        if ($user && $user->password === $request->password) {
+        if ($user && trim($user->password) === $request->password) {
             
             // Login-kan user ke sesi Laravel
             Auth::login($user);

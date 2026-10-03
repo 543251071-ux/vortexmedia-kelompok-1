@@ -10,7 +10,6 @@ class Pemesanan extends Model
     protected $primaryKey = 'id_pemesanan';
 
     protected $fillable = [
-        'kode_pemesanan',
         'id_user',            // Siapa pelanggan yang main
         'computer_id',         // Meja PC mana yang dipesan
         'tanggal_pemesanan',  // Tanggal booking

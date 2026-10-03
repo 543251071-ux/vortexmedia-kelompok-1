@@ -87,7 +87,7 @@
                         <div class="stat-header">
                             <img src="{{ asset('image/akar-icons_statistic-up.png') }}" alt="Statistik" class="stat-icon">
                         </div>
-                        <h3>Rp. 500.000,00</h3>
+                        <h3>Rp. {{ number_format($pendapatanHariIni, 0, ',', '.') }}</h3>
                         <span class="stat-subtext">pendapatan hari ini</span>
                     </div>
 
@@ -97,7 +97,7 @@
                             <span>Pesanan Hari Ini</span>
                             <img src="{{ asset('image/basil_invoice-outline.png') }}" alt="Pesanan" class="stat-icon">
                         </div>
-                        <h3>50 Transaksi</h3>
+                        <h3>{{ $totalTransaksiHariIni }} Transaksi</h3>
                         <span class="stat-subtext">Transaksi yang sudah tercatat</span>
                     </div>
                 </section>
@@ -119,52 +119,32 @@
                                     <th>No.</th>
                                     <th>Nama pelanggan</th>
                                     <th>Komputer</th>
-                                    <th>durasi</th>
+                                    <th>Durasi</th>
                                     <th>Status</th>
                                     <th class="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse ($pesananTerbaru as $index => $pesanan)
                                 <tr>
-                                    <td>1.</td>
-                                    <td>Muhammad Zidan</td>
-                                    <td>COMPUTER 01</td>
-                                    <td>2 Jam</td>
-                                    <td>Pending</td>
+                                    <td>{{ $index + 1 }}.</td>
+                                    <td>{{ $pesanan->user->nama ?? '-' }}</td>
+                                    <td>COMPUTER {{ str_pad($pesanan->komputer->nomor_komputer ?? '0', 2, '0', STR_PAD_LEFT) }}</td>
+                                    <td>{{ $pesanan->lama_pemesanan }} Jam</td>
+                                    <td>
+                                        <span class="status-badge status-{{ $pesanan->status }}">
+                                            {{ ucfirst($pesanan->status) }}
+                                        </span>
+                                    </td>
                                     <td class="text-center"><button type="button" class="btn-action">Aksi</button></td>
                                 </tr>
+                                @empty
                                 <tr>
-                                    <td>2.</td>
-                                    <td>Ahmad Rizky</td>
-                                    <td>COMPUTER 05</td>
-                                    <td>3 Jam</td>
-                                    <td>Diterima</td>
-                                    <td class="text-center"><button type="button" class="btn-action">Aksi</button></td>
+                                    <td colspan="6" style="text-align: center; padding: 20px; color: #999;">
+                                        Belum ada pesanan.
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>3.</td>
-                                    <td>Siti Rahma</td>
-                                    <td>COMPUTER 03</td>
-                                    <td>1 Jam</td>
-                                    <td>Ditolak</td>
-                                    <td class="text-center"><button type="button" class="btn-action">Aksi</button></td>
-                                </tr>
-                                <tr>
-                                    <td>4.</td>
-                                    <td>Budi Santoso</td>
-                                    <td>COMPUTER 12</td>
-                                    <td>4 Jam</td>
-                                    <td>Pending</td>
-                                    <td class="text-center"><button type="button" class="btn-action">Aksi</button></td>
-                                </tr>
-                                <tr>
-                                    <td>5.</td>
-                                    <td>Dewa Pratama</td>
-                                    <td>COMPUTER 08</td>
-                                    <td>2 Jam</td>
-                                    <td>Diterima</td>
-                                    <td class="text-center"><button type="button" class="btn-action">Aksi</button></td>
-                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

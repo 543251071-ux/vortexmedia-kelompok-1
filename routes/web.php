@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Login;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +23,7 @@ Route::middleware('guest')->group(function () {
 
 // Route terproteksi (sudah login)
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Tambahkan ini agar tidak error jika ada sisa panggilan route profile dari Breeze
     Route::get('/profile', function () {

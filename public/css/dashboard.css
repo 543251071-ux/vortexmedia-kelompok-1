@@ -335,3 +335,43 @@ body {
     border-color: #00d4ff;
     color: #00d4ff;
 }
+
+
+/* Status Badge Styles */
+.status-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Belum Dibayar / Pending */
+.status-badge.status-belum_dibayar,
+.status-badge.status-belum\ dibayar {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+/* Diterima */
+.status-badge.status-diterima {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.4);
+}
+
+/* Dibatalkan / Ditolak */
+.status-badge.status-dibatalkan {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.4);
+}
+
+/* Selesai */
+.status-badge.status-selesai {
+    background: rgba(0, 212, 255, 0.2);
+    color: #00d4ff;
+    border: 1px solid rgba(0, 212, 255, 0.4);
+}

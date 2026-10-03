@@ -16,7 +16,7 @@ return new class extends Migration
         $table->unsignedInteger('id_pemesanan'); // Foreign key ke tb_pemesanan
         $table->integer('id_transaksi');
         $table->integer('nominal'); // Disesuaikan menjadi integer (sesuai nominal di tb_pemesanan)
-        $table->enum('status_pembayaran', ['pending', 'settlement', 'expire', 'cancel']);
+        $table->enum('status_pembayaran', ['pending', 'diterima', 'ditolak']);
         $table->timestamp('dibayar_pada');
         $table->string('kode_qris', 255);
         $table->timestamps();
