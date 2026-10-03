@@ -9,8 +9,9 @@ use App\Http\Controllers\Login;
 |--------------------------------------------------------------------------
 */
 
+// Redirect halaman utama langsung ke login (Opsional)
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Route untuk tamu (belum login)
@@ -24,6 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // Tambahkan ini agar tidak error jika ada sisa panggilan route profile dari Breeze
+    Route::get('/profile', function () {
+        return redirect()->route('dashboard');
+    })->name('profile.edit');
 
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
 });

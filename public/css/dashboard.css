@@ -1,0 +1,337 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Background Utama Halaman */
+body {
+    background: linear-gradient(#002029d9, #002029d9), 
+                url('../asset/background1.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 20px;
+    color: #ffffff;
+}
+
+/* Layout Container */
+.dashboard-container {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Sidebar Styles */
+.siderbar-menu {
+    background: linear-gradient(180deg, rgba(0, 96, 122, 0.35), rgba(0, 176, 224, 0.25));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 210, 255, 0.45);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    height: calc(100vh - 40px);
+    width: 250px;
+    min-width: 250px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    padding: 22px 20px;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.25);
+}
+
+.logo-container .Image {
+    height: 42px;
+    width: auto;
+}
+
+/* Container Menu Sidebar */
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 14px;
+}
+
+/* Tombol Navigasi Sidebar */
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Mengunci ukuran gambar di tombol navigasi */
+.nav-button img {
+    width: 20px !important;
+    height: 20px !important;
+    max-width: 20px !important;
+    max-height: 20px !important;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* Efek Active & Hover Sidebar */
+.nav-button:hover, 
+.nav-button.active {
+    background: rgba(0, 176, 224, 0.3);
+    border: 1px solid rgba(0, 210, 255, 0.5);
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Top Header Profile */
+.top-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 4px 8px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ukuran ikon notifikasi lonceng di header */
+.header-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Styling Garis Pemisah Vertikal Header */
+.profile-divider {
+    width: 1px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.profile-avatar {
+    font-size: 28px;
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-role {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 11px;
+}
+
+.dropdown-icon {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+}
+
+/* Main Content Area */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: linear-gradient(180deg, rgba(0, 96, 122, 0.35), rgba(0, 176, 224, 0.25));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 210, 255, 0.45);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+/* Page Title */
+.page-title h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.page-title p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* Stat Cards */
+.stats-grid {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.stat-card {
+    width: 240px;
+    height: 115px;
+    background: rgba(0, 96, 122, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 210, 255, 0.35);
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+}
+
+.stat-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.stat-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.stat-subtext {
+    display: block;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Table Card */
+.table-card {
+    background: rgba(0, 96, 122, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 210, 255, 0.35);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.see-all-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.see-all-link:hover {
+    color: #00d4ff;
+}
+
+/* Ukuran ikon panah pada link "Lihat semua" */
+.link-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* Table Styling */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.data-table th {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.25);
+}
+
+.data-table td {
+    font-size: 13px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.15);
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Tombol Aksi */
+.btn-action {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    padding: 5px 18px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+    color: #00d4ff;
+}
