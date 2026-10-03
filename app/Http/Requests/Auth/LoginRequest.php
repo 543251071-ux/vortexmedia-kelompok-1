@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Auth\Events\Lockout;
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -28,7 +28,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -40,47 +40,50 @@ class LoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
-        $this->ensureIsNotRateLimited();
+        $loginInput = trim($this->input('email'));
+        $password = trim($this->input('password'));
+        $remember = $this->boolean('remember');
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
-
-        RateLimiter::clear($this->throttleKey());
-    }
-
-    /**
-     * Ensure the login request is not rate limited.
-     *
-     * @throws ValidationException
-     */
-    public function ensureIsNotRateLimited(): void
-    {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        // 1. Try standard Auth attempt via Email
+        if (Auth::attempt(['email' => $loginInput, 'password' => $password], $remember)) {
             return;
         }
 
-        event(new Lockout($this));
+        // 2. Try standard Auth attempt via Nama / Username
+        if (Auth::attempt(['nama' => $loginInput, 'password' => $password], $remember)) {
+            return;
+        }
 
-        $seconds = RateLimiter::availableIn($this->throttleKey());
+        // 3. Fallback: Search user case-insensitively and check plain-text or hash
+        $user = User::whereRaw('LOWER(email) = ?', [Str::lower($loginInput)])
+            ->orWhereRaw('LOWER(nama) = ?', [Str::lower($loginInput)])
+            ->first();
 
+        if ($user) {
+            $authenticated = false;
+
+            if (Str::startsWith($user->password, ['$2y$', '$2b$', '$2a$'])) {
+                if (Hash::check($password, $user->password)) {
+                    $authenticated = true;
+                }
+            } else {
+                if (trim($user->password) === $password) {
+                    $authenticated = true;
+                    // Auto-hash plain text password to Bcrypt
+                    $user->password = $password;
+                    $user->save();
+                }
+            }
+
+            if ($authenticated) {
+                Auth::login($user, $remember);
+                return;
+            }
+        }
+
+        // Failed authentication: throwing custom error message without rate limiting / cooldown
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
+            'email' => 'Email/Username atau password yang Anda masukkan salah.',
         ]);
-    }
-
-    /**
-     * Get the rate limiting throttle key for the request.
-     */
-    public function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
     }
 }

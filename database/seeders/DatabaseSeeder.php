@@ -15,11 +15,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::updateOrCreate(
+            ['email' => 'admin@vortexmedia.com'],
+            [
+                'nama' => 'admin',
+                'nomor_telepon' => '081234567890',
+                'email' => 'admin@vortexmedia.com',
+                'password' => 'password123',
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'user@vortexmedia.com'],
+            [
+                'nama' => 'user1',
+                'nomor_telepon' => '089876543210',
+                'email' => 'user@vortexmedia.com',
+                'password' => 'password123',
+            ]
+        );
     }
 }

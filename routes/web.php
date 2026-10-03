@@ -1,20 +1,29 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Login;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// Route untuk tamu (belum login)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [Login::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [Login::class, 'login'])->name('login.perform');
 });
 
-require __DIR__.'/auth.php';
+// Route terproteksi (sudah login)
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::post('/logout', [Login::class, 'logout'])->name('logout');
+});

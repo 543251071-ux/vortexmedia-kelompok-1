@@ -25,10 +25,10 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <!-- Email Address -->
-            <label for="email">Email</label>
+            <!-- Email / Username Address -->
+            <label for="email">Email / Username</label>
             <div class="input-box">
-                <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Masukan Email..." required autofocus autocomplete="username" class="UsernameText">
+                <input type="text" id="email" name="email" value="{{ old('email') }}" placeholder="Masukkan Email atau Username..." required autofocus autocomplete="username" class="UsernameText">
                 <i class="fa-regular fa-user input-icon"></i>
             </div>
             <x-input-error :messages="$errors->get('email')" style="color: #ff6b6b; font-size: 12px; margin-top: 4px; align-self: flex-start;" />
@@ -42,7 +42,7 @@
             <x-input-error :messages="$errors->get('password')" style="color: #ff6b6b; font-size: 12px; margin-top: 4px; align-self: flex-start;" />
 
             <!-- Remember Me & Forgot Password -->
-            <div class="wrapper">
+            <!-- <div class="wrapper">
                 <div class="remember-box">
                     <input type="checkbox" id="remember_me" name="remember" class="remember">
                     <label for="remember_me" class="taglineRA" style="margin: 0;">Remember Me</label>
@@ -50,17 +50,17 @@
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" class="taglineFP">Forgot Password?</a>
                 @endif
-            </div>
+            </div> -->
 
             <!-- Submit Button -->
             <button type="submit" class="btn-login">Sign In</button>
 
             <!-- Register Link -->
-            @if (Route::has('register'))
+            <!-- @if (Route::has('register'))
                 <p class="signup-text">
                     Don't have account? <a href="{{ route('register') }}">Sign Up</a>
                 </p>
-            @endif
+            @endif -->
         </form>
     </div>
 
