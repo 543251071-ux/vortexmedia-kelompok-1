@@ -1,11 +1,16 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Str;
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
 
     $response->assertStatus(200);
+    $response->assertSee('action="'.route('login.perform').'"', false);
+    $response->assertSee('name="_token"', false);
+    $response->assertSee('name="email"', false);
+    $response->assertSee('name="password"', false);
 });
 
 test('users can authenticate using email', function () {
@@ -18,6 +23,7 @@ test('users can authenticate using email', function () {
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
+    $this->get('/dashboard')->assertOk();
 });
 
 test('users can authenticate using username (nama)', function () {
@@ -68,7 +74,7 @@ test('users with legacy plain text password can authenticate and password is aut
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
-    $this->assertTrue(\Illuminate\Support\Str::startsWith($user->refresh()->password, ['$2y$', '$2b$', '$2a$']));
+    $this->assertTrue(Str::startsWith($user->refresh()->password, ['$2y$', '$2b$', '$2a$']));
 });
 
 test('users can logout', function () {

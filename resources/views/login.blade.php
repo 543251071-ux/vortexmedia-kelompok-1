@@ -9,42 +9,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="css/login.css">
     <title>Login Page</title>
 </head>
 <body>
-
     <div class="login-card">
-        <img src="{{ asset('asset/logo.png') }}" alt="Gambar Logo">
+        <img src="../asset/logo.png" alt="Gambar Logo">
 
-        <h1>Welcome Back!</h1>
+        <h1>Welcome back!</h1>
         <p>Please log in before using our website.</p>
+
+        @if ($errors->any())
+            <div style="color: #ff4d4d; background: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                {{ $errors->first() }}
+            </div>
+        @endif
 
         <form action="{{ route('login.perform') }}" method="POST">
             @csrf
 
-            @if ($errors->any())
-                <div style="color: #ff4d4d; background: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
-                    {{ $errors->first() }}
-                </div>
-            @endif
-
             <label for="email">Email</label>
             <div class="input-box">
-                <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Masukan Email..." required class="UsernameText">
+                <input type="text" id="email" name="email" value="{{ old('email') }}" placeholder="Masukan Email..." required maxlength="21" autocomplete="username" class="UsernameText">
                 <i class="fa-regular fa-user input-icon"></i>
             </div>
 
             <label for="password">Password</label>
             <div class="input-box">
-                <input type="password" id="password" name="password" placeholder="Masukan Password..." required class="PasswordText">
-                <i class="fa-regular fa-eye input-icon" id="togglePassword" style="cursor: pointer;"></i>
+                <input type="password" id="password" name="password" placeholder="Masukkan Password..." required maxlength="19" autocomplete="current-password" class="PasswordText">
+                <i class="fa-regular fa-eye-slash input-icon" id="togglePassword" style="cursor: pointer;"></i>
             </div>
 
             <button class="btn-login"
-            type="submit" style="margin-top: 20px; width: 100%; padding: 12px; cursor: pointer;">Login</button>
+                type="submit" style="margin-top: 20px; width: 100%; padding: 12px; cursor: pointer;">Login</button>
         </form>
-    </div>
 
+        <script>
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+
+            togglePassword.addEventListener('click', function () {
+                if (passwordInput.type === "text") {
+                    passwordInput.type = "password";
+                    this.classList.remove('fa-eye');
+                    this.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = "text";
+                    this.classList.remove('fa-eye-slash');
+                    this.classList.add('fa-eye');
+                }
+            });
+        </script>
+    </div>
 </body>
 </html>

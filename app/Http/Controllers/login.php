@@ -2,46 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class Login extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForm(): View
     {
         return view('login');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
-        $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        $credentials = $request->validate([
+            'email' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
-        // 1. Cari user di tb_user berdasarkan email
-        $user = User::get()->first(function ($u) use ($request) {
-            return trim($u->email) === trim($request->email);
-        });
+        $identity = trim($credentials['email']);
+        $user = User::query()
+            ->where('email', $identity)
+            ->orWhere('nama', $identity)
+            ->first();
 
-        // 2. Verifikasi password langsung (plain text)
-        if ($user && trim($user->password) === $request->password) {
-            
-            // Login-kan user ke sesi Laravel
-            Auth::login($user);
-            $request->session()->regenerate();
-
-            return redirect()->intended('/dashboard');
+        if ($user === null) {
+            return back()->withErrors([
+                'email' => 'Email atau password salah.',
+            ])->onlyInput('email');
         }
 
-        // 3. Jika gagal
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+        $password = $credentials['password'];
+        $storedPassword = (string) $user->password;
+        $isLegacyPassword = password_get_info($storedPassword)['algoName'] === 'unknown';
+        $passwordMatches = $isLegacyPassword
+            ? hash_equals($storedPassword, $password)
+            : Hash::check($password, $storedPassword);
+
+        if (! $passwordMatches) {
+            return back()->withErrors([
+                'email' => 'Email atau password salah.',
+            ])->onlyInput('email');
+        }
+
+        if ($isLegacyPassword) {
+            $user->password = Hash::make($password);
+            $user->save();
+        }
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect()->intended('/dashboard');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 

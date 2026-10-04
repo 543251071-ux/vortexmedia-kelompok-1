@@ -34,5 +34,7 @@ class DatabaseSeeder extends Seeder
                 'password' => 'password123',
             ]
         );
+
+        $this->call(RyanZidanSeeder::class);
     }
 }
