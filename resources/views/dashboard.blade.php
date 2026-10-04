@@ -26,15 +26,15 @@
 
             <div class="menu-items">
                 <button type="button" class="nav-button active">
-                    <img src="{{ asset('image/user.png') }}" alt="Pengguna" class="nav-icon">
+                    <img src="{{ asset('../asset/user.png') }}" alt="Pengguna" class="nav-icon">
                     <span>Pengguna</span>
                 </button>
                 <button type="button" class="nav-button">
-                    <img src="{{ asset('image/script.png') }}" alt="Pemesanan" class="nav-icon">
+                    <img src="{{ asset('../asset/script.png') }}" alt="Pemesanan" class="nav-icon">
                     <span>Pemesanan</span>
                 </button>
                 <button type="button" class="nav-button">
-                    <img src="{{ asset('image/computer.png') }}" alt="Komputer" class="nav-icon">
+                    <img src="{{ asset('../asset/computer.png') }}" alt="Komputer" class="nav-icon">
                     <span>Komputer</span>
                 </button>
             </div>
@@ -48,7 +48,7 @@
                 <div class="user-profile">
                     <!-- Tombol Lonceng Notifikasi -->
                     <button type="button" class="btn-icon">
-                        <img src="{{ asset('image/notification.png') }}" alt="Notifikasi" class="header-icon">
+                        <img src="{{ asset('../asset/notification.png') }}" alt="Notifikasi" class="header-icon">
                     </button>
 
                     <!-- Garis Pemisah Vertikal -->
@@ -85,7 +85,7 @@
                     <!-- Card 1: Pendapatan -->
                     <div class="stat-card">
                         <div class="stat-header">
-                            <img src="{{ asset('image/akar-icons_statistic-up.png') }}" alt="Statistik" class="stat-icon">
+                            <img src="{{ asset('../asset/akar-icons_statistic-up.png') }}" alt="Statistik" class="stat-icon">
                         </div>
                         <h3>Rp. {{ number_format($pendapatanHariIni, 0, ',', '.') }}</h3>
                         <span class="stat-subtext">pendapatan hari ini</span>
@@ -95,7 +95,7 @@
                     <div class="stat-card">
                         <div class="stat-header">
                             <span>Pesanan Hari Ini</span>
-                            <img src="{{ asset('image/basil_invoice-outline.png') }}" alt="Pesanan" class="stat-icon">
+                            <img src="{{ asset('../asset/basil_invoice-outline.png') }}" alt="Pesanan" class="stat-icon">
                         </div>
                         <h3>{{ $totalTransaksiHariIni }} Transaksi</h3>
                         <span class="stat-subtext">Transaksi yang sudah tercatat</span>
@@ -108,7 +108,7 @@
                         <h2>Pesanan Terbaru</h2>
                         <a href="#" class="see-all-link">
                             Lihat semua 
-                            <img src="{{ asset('image/bitcoin-icons_arrow-right-filled.png') }}" alt="Panah" class="link-icon">
+                            <img src="{{ asset('../asset/bitcoin-icons_arrow-right-filled.png') }}" alt="Panah" class="link-icon">
                         </a>
                     </div>
 

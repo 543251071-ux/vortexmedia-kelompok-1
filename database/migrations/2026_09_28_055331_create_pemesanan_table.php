@@ -21,10 +21,9 @@ return new class extends Migration
         $table->time('waktu_akhir');
         $table->integer('nominal');
         $table->enum('status', [
-            'belum dibayar', 
+            'pending', 
             'diterima', 
-            'dibatalkan', 
-            'selesai'
+            'ditolak', 
         ]);
         $table->string('alasan_ditolak', 100)->nullable(); // NULLABLE
         $table->timestamps();

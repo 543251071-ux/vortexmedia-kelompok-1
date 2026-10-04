@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Pemesanan;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $today = Carbon::today();
+        $pesananDiterima = Pemesanan::where('status', 'diterima');
 
         // Ambil pesanan terbaru (5 terakhir) beserta relasi komputer & user
         $pesananTerbaru = Pemesanan::with(['komputer', 'user'])
@@ -17,13 +18,13 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // Hitung pendapatan hari ini (status = diterima atau selesai)
-        $pendapatanHariIni = Pemesanan::whereDate('tanggal_pemesanan', $today)
-            ->whereIn('status', ['diterima', 'selesai'])
-            ->sum('nominal');
+        // Hitung pendapatan dari semua pesanan yang telah diterima
+        $pendapatanHariIni = (int) $pesananDiterima
+            ->select(DB::raw('SUM(lama_pemesanan * 7000) as total'))
+            ->value('total');
 
-        // Hitung total transaksi hari ini
-        $totalTransaksiHariIni = Pemesanan::whereDate('tanggal_pemesanan', $today)->count();
+        // Hitung total transaksi yang sudah diterima
+        $totalTransaksiHariIni = $pesananDiterima->count();
 
         return view('dashboard', compact(
             'pesananTerbaru',
