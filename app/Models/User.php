@@ -12,6 +12,7 @@ class User extends Authenticatable
 
     // Menghubungkan ke tabel db_vortexmedia
     protected $table = 'tb_user';
+
     protected $primaryKey = 'id_user';
 
     protected $fillable = [
@@ -19,6 +20,7 @@ class User extends Authenticatable
         'nomor_telepon',
         'email',
         'password',
+        'role',
     ];
 
     protected $hidden = [
@@ -40,5 +42,11 @@ class User extends Authenticatable
     public function setNameAttribute($value)
     {
         $this->attributes['nama'] = $value;
+    }
+
+    /** Cek apakah user adalah admin */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
     }
 }

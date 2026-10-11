@@ -20,7 +20,10 @@ class Login extends Controller
     {
         $credentials = $request->validate([
             'email' => ['required', 'string'],
-            'password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'regex:/[0-9]/'],
+        ], [
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.regex' => 'Password harus mengandung minimal 1 angka.',
         ]);
 
         $identity = trim($credentials['email']);
@@ -36,7 +39,7 @@ class Login extends Controller
         }
 
         $password = $credentials['password'];
-        $storedPassword = (string) $user->password;
+        $storedPassword = trim((string) $user->password);
         $isLegacyPassword = password_get_info($storedPassword)['algoName'] === 'unknown';
         $passwordMatches = $isLegacyPassword
             ? hash_equals($storedPassword, $password)
@@ -56,7 +59,12 @@ class Login extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->intended('/dashboard');
+        // Redirect berdasarkan role
+        if ($user->isAdmin()) {
+            return redirect()->intended('/dashboard');
+        }
+
+        return redirect()->intended('/home');
     }
 
     public function logout(Request $request): RedirectResponse
