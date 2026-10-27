@@ -36,5 +36,6 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->call(RyanZidanSeeder::class);
+        $this->call(DashboardSeeder::class);
     }
 }

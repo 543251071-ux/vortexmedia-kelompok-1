@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\DashboardController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\UserMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -10,7 +12,7 @@ use App\Http\Controllers\DashboardController;
 |--------------------------------------------------------------------------
 */
 
-// Redirect halaman utama langsung ke login (Opsional)
+// Redirect halaman utama langsung ke login
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -21,11 +23,21 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [Login::class, 'login'])->name('login.perform');
 });
 
-// Route terproteksi (sudah login)
-Route::middleware('auth')->group(function () {
+// Route terproteksi untuk ADMIN
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
-    // Tambahkan ini agar tidak error jika ada sisa panggilan route profile dari Breeze
+// Route terproteksi untuk USER biasa
+Route::middleware(['auth', UserMiddleware::class])->group(function () {
+    // Halaman utama user (belum dibuat, sementara tampilkan placeholder)
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+});
+
+// Route profile (redirect ke dashboard)
+Route::middleware('auth')->group(function () {
     Route::get('/profile', function () {
         return redirect()->route('dashboard');
     })->name('profile.edit');

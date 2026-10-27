@@ -50,4 +50,6 @@ it('shows today accepted order count and revenue based on duration at 7000 per h
     $response->assertOk();
     $response->assertSee('2 Transaksi');
     $response->assertSee('Rp. 21.000');
+    $response->assertSee($user->nama);
+    $response->assertSee('COMPUTER 01');
 });
