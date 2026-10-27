@@ -8,7 +8,7 @@
 /* Background Utama Halaman */
 body {
     background: linear-gradient(#002029d9, #002029d9), 
-                url('../asset/ background1.jpeg');
+                url('../asset/background1.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
