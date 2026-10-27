@@ -5,7 +5,7 @@
     font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Background Utama Halaman */
+
 body {
     background: linear-gradient(#002029d9, #002029d9), 
                 url('../asset/background1.jpeg');
@@ -18,7 +18,7 @@ body {
     color: #ffffff;
 }
 
-/* Layout Container */
+
 .dashboard-container {
     display: flex;
     gap: 24px;
@@ -27,7 +27,7 @@ body {
     margin: 0 auto;
 }
 
-/* Sidebar Styles */
+
 .siderbar-menu {
     background: linear-gradient(180deg, rgba(0, 96, 122, 0.35), rgba(0, 176, 224, 0.25));
     backdrop-filter: blur(10px);
@@ -50,11 +50,11 @@ body {
 }
 
 .logo-container .Image {
-    height: 42px;
+    height: 72px;
     width: auto;
 }
 
-/* Container Menu Sidebar */
+
 .menu-items {
     display: flex;
     flex-direction: column;
@@ -62,7 +62,7 @@ body {
     padding: 20px 14px;
 }
 
-/* Tombol Navigasi Sidebar */
+
 .nav-button {
     display: flex;
     align-items: center;
@@ -79,7 +79,7 @@ body {
     transition: all 0.25s ease;
 }
 
-/* Mengunci ukuran gambar di tombol navigasi */
+
 .nav-button img {
     width: 20px !important;
     height: 20px !important;
@@ -89,14 +89,14 @@ body {
     flex-shrink: 0;
 }
 
-/* Efek Active & Hover Sidebar */
+
 .nav-button:hover, 
 .nav-button.active {
     background: rgba(0, 176, 224, 0.3);
     border: 1px solid rgba(0, 210, 255, 0.5);
 }
 
-/* Content Wrapper */
+
 .content-wrapper {
     flex: 1;
     display: flex;
@@ -104,7 +104,7 @@ body {
     gap: 16px;
 }
 
-/* Top Header Profile */
+
 .top-header {
     display: flex;
     justify-content: flex-end;
@@ -128,14 +128,14 @@ body {
     justify-content: center;
 }
 
-/* Ukuran ikon notifikasi lonceng di header */
+
 .header-icon {
     width: 20px;
     height: 20px;
     object-fit: contain;
 }
 
-/* Styling Garis Pemisah Vertikal Header */
+
 .profile-divider {
     width: 1px;
     height: 24px;
@@ -173,7 +173,7 @@ body {
     font-size: 12px;
 }
 
-/* Main Content Area */
+
 .main-content {
     display: flex;
     flex-direction: column;
@@ -187,7 +187,7 @@ body {
     padding: 24px;
 }
 
-/* Page Title */
+
 .page-title h1 {
     font-size: 24px;
     font-weight: 700;
@@ -200,7 +200,7 @@ body {
     margin-top: 4px;
 }
 
-/* Stat Cards */
+
 .stats-grid {
     display: flex;
     gap: 16px;
@@ -246,7 +246,7 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* Table Card */
+
 .table-card {
     background: rgba(0, 96, 122, 0.25);
     backdrop-filter: blur(8px);
@@ -281,14 +281,14 @@ body {
     color: #00d4ff;
 }
 
-/* Ukuran ikon panah pada link "Lihat semua" */
+
 .link-icon {
     width: 16px;
     height: 16px;
     object-fit: contain;
 }
 
-/* Table Styling */
+
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -318,7 +318,7 @@ body {
     text-align: center;
 }
 
-/* Tombol Aksi */
+
 .btn-action {
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.35);
@@ -337,7 +337,7 @@ body {
 }
 
 
-/* Status Badge Styles */
+
 .status-badge {
     display: inline-block;
     padding: 4px 14px;
@@ -347,7 +347,7 @@ body {
     text-transform: capitalize;
 }
 
-/* Belum Dibayar / Pending */
+
 .status-badge.status-belum_dibayar,
 .status-badge.status-belum\ dibayar {
     background: rgba(255, 193, 7, 0.2);
@@ -355,21 +355,21 @@ body {
     border: 1px solid rgba(255, 193, 7, 0.4);
 }
 
-/* Diterima */
+
 .status-badge.status-diterima {
     background: rgba(40, 167, 69, 0.2);
     color: #28a745;
     border: 1px solid rgba(40, 167, 69, 0.4);
 }
 
-/* Dibatalkan / Ditolak */
+
 .status-badge.status-dibatalkan {
     background: rgba(220, 53, 69, 0.2);
     color: #dc3545;
     border: 1px solid rgba(220, 53, 69, 0.4);
 }
 
-/* Selesai */
+
 .status-badge.status-selesai {
     background: rgba(0, 212, 255, 0.2);
     color: #00d4ff;
