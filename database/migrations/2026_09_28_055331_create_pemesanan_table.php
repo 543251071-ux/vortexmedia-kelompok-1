@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
        Schema::create('tb_pemesanan', function (Blueprint $table) {
-        $table->increments('id_pemesanan'); // INT AUTO_INCREMENT PRIMARY KEY
+        $table->increments('id_pemesanan'); // INT AUTO_INCREMENT PRIMARY KEYa
         $table->unsignedInteger('id_user'); // Foreign key ke tb_user
         $table->unsignedInteger('computer_id'); // Foreign key ke tb_komputer
         $table->date('tanggal_pemesanan');
@@ -39,7 +39,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayaran');
+        Schema::dropIfExists('pemesanan');
     }
 };
     

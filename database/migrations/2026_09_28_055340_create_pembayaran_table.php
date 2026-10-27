@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tb_pembayaran', function (Blueprint $table) {
         $table->increments('id'); 
-        $table->unsignedInteger('id_pemesanan');
         $table->integer('id_transaksi');
         $table->integer('nominal');
         $table->enum('status_pembayaran', ['pending', 'diterima', 'ditolak']);
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pemesanan');
+        Schema::dropIfExists('pembayaran');
     }
 };
