@@ -55,18 +55,34 @@
                     <div class="profile-divider"></div>
 
                     <!-- Detail Profil User Dinamis dari Database -->
-                    <div class="profile-info">
-                        <i class="fa-solid fa-circle-user profile-avatar"></i>
-                        <div class="user-text">
-                            <span class="user-name">{{ Auth::user()->nama ?? Auth::user()->email }}</span>
-                            <span class="user-role">Administrator</span>
+                    <div class="profile-dropdown-wrapper">
+                        <div class="profile-info" id="profileToggle" onclick="toggleDropdown()">
+                            <i class="fa-solid fa-circle-user profile-avatar"></i>
+                            <div class="user-text">
+                                <span class="user-name">{{ Auth::user()->nama ?? Auth::user()->email }}</span>
+                                <span class="user-role">Administrator</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down dropdown-icon" id="dropdownIcon"></i>
                         </div>
-                        
-                        <!-- Form Logout -->
-                        <form action="{{ route('logout') }}" method="POST" style="margin-left: 10px;">
-                            @csrf
-                            <button type="submit" class="btn-action" style="padding: 4px 10px; font-size: 11px;">Logout</button>
-                        </form>
+
+                        <!-- Dropdown Menu -->
+                        <div class="profile-dropdown-menu" id="profileDropdown">
+                            <div class="dropdown-header">
+                                {{-- Ganti src gambar sesuai kebutuhan Anda --}}
+                                <div class="dropdown-avatar-wrapper">
+                                    <img src="{{ asset('../asset/user.png') }}" alt="Avatar" class="dropdown-avatar-img">
+                                </div>
+                                <span class="dropdown-name">{{ Auth::user()->nama ?? Auth::user()->email }}</span>
+                                <span class="dropdown-role">Administrator</span>
+                            </div>
+
+                            <div class="dropdown-body">
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-logout">Log Out</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -154,6 +170,27 @@
         </div>
 
     </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            const icon     = document.getElementById('dropdownIcon');
+            dropdown.classList.toggle('show');
+            icon.classList.toggle('rotate');
+        }
+
+        // Tutup dropdown jika klik di luar area profil
+        document.addEventListener('click', function (event) {
+            const wrapper  = document.querySelector('.profile-dropdown-wrapper');
+            const dropdown = document.getElementById('profileDropdown');
+            const icon     = document.getElementById('dropdownIcon');
+
+            if (wrapper && !wrapper.contains(event.target)) {
+                dropdown.classList.remove('show');
+                icon.classList.remove('rotate');
+            }
+        });
+    </script>
 
 </body>
 </html>
