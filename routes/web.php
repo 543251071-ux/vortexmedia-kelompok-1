@@ -14,6 +14,10 @@ use App\Http\Middleware\UserMiddleware;
 
 // Redirect halaman utama langsung ke login
 Route::get('/', function () {
+    return redirect()->route('pemesanan.index');
+});
+
+Route::get('/', function () {
     return redirect()->route('login');
 });
 
