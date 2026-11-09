@@ -59,12 +59,11 @@ class Login extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        // Redirect berdasarkan role
         if ($user->isAdmin()) {
-            return redirect()->intended('/dashboard');
+            return redirect()->route('dashboard');
         }
 
-        return redirect()->intended('/home');
+        return redirect()->route('home');
     }
 
     public function logout(Request $request): RedirectResponse

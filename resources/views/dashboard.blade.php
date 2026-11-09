@@ -31,14 +31,14 @@
                     <img src="{{ asset('../asset/user.png') }}" alt="Pengguna" class="nav-icon">
                     <span>Pengguna</span>
                 </button>
-                <button type="button" class="nav-button" href="{{ route('pemesanan.index') }}">
+                <a href="{{ route('pemesanan.index') }}" class="nav-button">
                     <img src="{{ asset('../asset/script.png') }}" alt="Pemesanan" class="nav-icon">
                     <span>Pemesanan</span>
-                </button>
-                <button type="button" class="nav-button">
+                </a>
+                <a href="{{ route('komputer') }}" class="nav-button">
                     <img src="{{ asset('../asset/computer.png') }}" alt="Komputer" class="nav-icon">
                     <span>Komputer</span>
-                </button>
+                </a>
             </div>
         </aside>
 

@@ -24,18 +24,18 @@
             </div>
 
             <div class="menu-items">
-                <button type="button" class="nav-button">
-                    <img src="image/user.png" alt="Pengguna" class="nav-icon">
+                <a href="{{ route('dashboard') }}" class="nav-button">
+                    <img src="{{ asset('../asset/user.png') }}" alt="Pengguna" class="nav-icon">
                     <span>Pengguna</span>
-                </button>
-                <button type="button" class="nav-button active">
-                    <img src="image/script.png" alt="Pemesanan" class="nav-icon">
+                </a>
+                <a href="{{ route('pemesanan.index') }}" class="nav-button active" aria-current="page">
+                    <img src="{{ asset('../asset/script.png') }}" alt="Pemesanan" class="nav-icon">
                     <span>Pemesanan</span>
-                </button>
-                <button type="button" class="nav-button">
-                    <img src="image/computer.png" alt="Komputer" class="nav-icon">
+                </a>
+                <a href="{{ route('komputer') }}" class="nav-button">
+                    <img src="{{ asset('../asset/computer.png') }}" alt="Komputer" class="nav-icon">
                     <span>Komputer</span>
-                </button>
+                </a>
             </div>
         </aside>
 

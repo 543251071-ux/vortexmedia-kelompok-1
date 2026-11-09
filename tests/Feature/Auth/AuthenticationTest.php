@@ -22,8 +22,8 @@ test('users can authenticate using email', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
-    $this->get('/dashboard')->assertOk();
+    $response->assertRedirect(route('home', absolute: false));
+    $this->get('/home')->assertOk();
 });
 
 test('users can authenticate using username (nama)', function () {
@@ -35,6 +35,22 @@ test('users can authenticate using username (nama)', function () {
     ]);
 
     $this->assertAuthenticated();
+    $response->assertRedirect(route('home', absolute: false));
+});
+
+test('admins are redirected to the dashboard even when an intended home url is stored', function () {
+    $admin = User::factory()->create([
+        'email' => 'alvin@gmail.com',
+        'role' => 'admin',
+    ]);
+
+    $response = $this->withSession(['url.intended' => route('home', absolute: false)])
+        ->post('/login', [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+
+    $this->assertAuthenticatedAs($admin);
     $response->assertRedirect(route('dashboard', absolute: false));
 });
 
@@ -73,7 +89,7 @@ test('users with legacy plain text password can authenticate and password is aut
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('home', absolute: false));
     $this->assertTrue(Str::startsWith($user->refresh()->password, ['$2y$', '$2b$', '$2a$']));
 });
 

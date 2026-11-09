@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Login;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Login;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +13,6 @@ use App\Http\Middleware\UserMiddleware;
 */
 
 // Redirect halaman utama langsung ke login
-Route::get('/', function () {
-    return redirect()->route('pemesanan.index');
-});
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -30,6 +27,8 @@ Route::middleware('guest')->group(function () {
 // Route terproteksi untuk ADMIN
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::view('/pemesanan', 'pemesanan')->name('pemesanan.index');
+    Route::view('/komputer', 'komputer')->name('komputer');
 });
 
 // Route terproteksi untuk USER biasa

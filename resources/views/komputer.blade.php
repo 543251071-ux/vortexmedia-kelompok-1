@@ -120,26 +120,20 @@
                 </div>
 
                 <!-- Navigation Items -->
-                <nav class="space-y-3">
-                    <!-- Menu Item: Pengguna -->
-                    <div class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-slate-300 opacity-80 cursor-pointer hover:bg-white/5 transition-all duration-200">
-                        <i class="fa-regular fa-user text-xl w-6"></i>
-                        <span class="font-semibold text-base">Pengguna</span>
-                    </div>
-
-                    <!-- Menu Item: Pemesanan -->
-                    <div class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-slate-300 opacity-80 cursor-pointer hover:bg-white/5 transition-all duration-200">
-                        <i class="fa-regular fa-rectangle-list text-xl w-6"></i>
-                        <span class="font-semibold text-base">Pemesanan</span>
-                    </div>
-
-                    <!-- Menu Item: Komputer (Aktif Highlighted) -->
-                    <div class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-white bg-vortex-cyan/20 border border-vortex-cyan/50 shadow-[0_0_20px_rgba(0,195,248,0.2)] cursor-pointer">
-                        <i class="fa-solid fa-desktop text-xl w-6 text-vortex-cyan"></i>
-                        <span class="font-bold text-base">Komputer</span>
-                    </div>
-                </nav>
-            </div>
+                <div class="flex flex-col gap-2">
+                    <a href="{{ route('dashboard') }}" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-slate-300 opacity-80 hover:bg-white/5 transition-all duration-200">
+                        <img src="{{ asset('../asset/user.png') }}" alt="Pengguna" class="w-6 h-6 object-contain">
+                        <span>Pengguna</span>
+                    </a>
+                    <a href="{{ route('pemesanan.index') }}" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-slate-300 opacity-80 hover:bg-white/5 transition-all duration-200">
+                        <img src="{{ asset('../asset/script.png') }}" alt="Pemesanan" class="w-6 h-6 object-contain">
+                        <span>Pemesanan</span>
+                    </a>
+                    <a href="{{ route('komputer') }}" class="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-white bg-vortex-cyan/20 border border-vortex-cyan/50 shadow-[0_0_20px_rgba(0,195,248,0.2)]" aria-current="page">
+                        <img src="{{ asset('../asset/computer.png') }}" alt="Komputer" class="w-6 h-6 object-contain">
+                        <span>Komputer</span>
+                    </a>
+                </div>
 
             <!-- Bottom Status System Badge -->
             <div class="pt-6 border-t border-white/10 mt-6 hidden md:block">
