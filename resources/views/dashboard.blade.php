@@ -29,7 +29,7 @@
                     <img src="{{ asset('../asset/user.png') }}" alt="Pengguna" class="nav-icon">
                     <span>Pengguna</span>
                 </button>
-                <button type="button" class="nav-button">
+                <button type="button" class="nav-button" href="{{ route('pemesanan.index') }}">
                     <img src="{{ asset('../asset/script.png') }}" alt="Pemesanan" class="nav-icon">
                     <span>Pemesanan</span>
                 </button>
