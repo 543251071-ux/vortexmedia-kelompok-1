@@ -55,20 +55,7 @@
                     <div class="profile-divider"></div>
 
 
-                    
-                    <div class="profile-info">
-                        <i class="fa-solid fa-circle-user profile-avatar"></i>
-                        <div class="user-text">
-                            <span class="user-name">{{ Auth::user()->nama ?? Auth::user()->email }}</span>
-                            <span class="user-role">Administrator</span>
-                        </div>
-                        
-                        
-                        <form action="{{ route('logout') }}" method="POST" style="margin-left: 10px;">
-                            @csrf
-                            <button type="submit" class="btn-action" style="padding: 4px 10px; font-size: 11px;">Logout</button>
-                        </form>
-=======
+
                     <!-- Detail Profil User Dinamis dari Database -->
                     <div class="profile-dropdown-wrapper">
                         <div class="profile-info" id="profileToggle" onclick="toggleDropdown()">
@@ -98,7 +85,6 @@
                                 </form>
                             </div>
                         </div>
->>>>>>> a21b4632b2c3384139758b5cdfb75ffdac69eee3
                     </div>
                 </div>
             </header>
