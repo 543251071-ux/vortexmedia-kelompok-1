@@ -193,44 +193,35 @@
 
         // --- Script Dropdown Status PC ---
         function toggleStatusMenu(button) {
-            // Cari elemen dropdown di dalam card yang sama
             const wrapper = button.parentElement;
             const dropdown = wrapper.querySelector('.status-dropdown');
             
-            // Tutup semua dropdown lain yang sedang terbuka
+            // Tutup semua dropdown lain
             document.querySelectorAll('.status-dropdown').forEach(menu => {
                 if (menu !== dropdown) menu.classList.remove('show');
             });
 
-            // Toggle dropdown yang diklik
             dropdown.classList.toggle('show');
         }
 
         // Fungsi saat status dipilih
         function pilihStatus(button) {
-            // Ambil teks status yang dipilih
             const statusText = button.textContent.trim();
-            
-            // Ambil elemen value status di card tersebut
             const wrapper = button.closest('.status-action-wrapper');
             const card = wrapper.closest('.pc-card');
             const statusValue = card.querySelector('.status-value');
             
-            // Ubah teks status di card
             statusValue.textContent = statusText.toUpperCase();
-            
-            // Sembunyikan dropdown setelah dipilih
             wrapper.querySelector('.status-dropdown').classList.remove('show');
         }
 
-        // Tutup semua dropdown jika klik di luar area
+        // Tutup semua dropdown jika klik di luar
         document.addEventListener('click', function (e) {
             if (!profileToggle.contains(e.target) && !profileMenu.contains(e.target)) {
                 profileMenu.classList.remove('show');
                 chevronIcon.classList.remove('rotate');
             }
             
-            // Tutup dropdown status jika klik di luar tombol/dropdown
             if (!e.target.closest('.status-action-wrapper')) {
                 document.querySelectorAll('.status-dropdown').forEach(menu => {
                     menu.classList.remove('show');

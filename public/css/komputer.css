@@ -346,7 +346,7 @@ body {
     margin-left: 5px;
 }
 
-/* --- TOMBOL & DROPDOWN STATUS BARU --- */
+/* --- TOMBOL & DROPDOWN STATUS --- */
 .status-action-wrapper {
     position: relative;
     width: 100%;
@@ -369,41 +369,41 @@ body {
     background: #00d4ff;
 }
 
-/* Pop-up Menu Status */
+/* Pop-up Menu Status (MUNCUL KE SAMPING KANAN & NAIK KE ATAS) */
 .status-dropdown {
     position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    width: 100%;
+    top: -60px; /* <-- DIUBAH: Nilai negatif agar naik ke atas */
+    left: calc(100% + 10px); 
+    width: 160px; 
     background: linear-gradient(180deg, rgba(0, 50, 68, 0.95), rgba(0, 85, 110, 0.95));
     backdrop-filter: blur(15px);
     border: 1px solid rgba(0, 210, 255, 0.6);
     border-radius: 12px;
-    padding: 12px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    z-index: 10;
+    gap: 10px;
+    z-index: 100;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     
     /* Animasi Sembunyi */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-5px);
+    transform: translateX(-10px);
     transition: all 0.25s ease;
 }
 
 .status-dropdown.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
 .status-dropdown-header {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
     text-align: left;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
     font-weight: 500;
 }
 
@@ -435,7 +435,7 @@ body {
     border-radius: 50%;
     display: inline-block;
 }
-.dot-kosong { background-color: #6c757d; } /* Abu-abu */
-.dot-tersedia { background-color: #28a745; } /* Hijau */
-.dot-terpakai { background-color: #dc3545; } /* Merah */
-.dot-dipesan { background-color: #ffc107; } /* Kuning */
+.dot-kosong { background-color: #6c757d; } 
+.dot-tersedia { background-color: #28a745; } 
+.dot-terpakai { background-color: #dc3545; } 
+.dot-dipesan { background-color: #ffc107; } 
