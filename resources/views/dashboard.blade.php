@@ -5,58 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard VortexPlay</title>
     
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Link CSS Utama Laravel -->z``
-     
-    
+    <!-- Link CSS Utama Laravel -->
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 <body>
 
     <div class="dashboard-container">
         
-        
-        <aside class="siderbar-menu">
+        <!-- Sidebar Menu -->
+        <aside class="sidebar-menu">
             <div class="logo-container">
-                <img src="{{ asset('../asset/logo.png') }}" alt="Logo" class="Image"> 
+                <!-- Disamakan dengan halaman pemesanan -->
+                <img src="{{ asset('asset/Desain_Tanpa_Judul__2_-removebg-preview.png') }}" alt="VortexPlay Logo" class="logo-img">
             </div>
 
-            <div class="menu-items">
-                <button type="button" class="nav-button active">
-                    <img src="{{ asset('../asset/user.png') }}" alt="Pengguna" class="nav-icon">
+            <nav class="menu-items">
+                <!-- Menu Pengguna Active -->
+                <a href="{{ route('dashboard') }}" class="nav-button active" aria-current="page">
+                    <img src="{{ asset('asset/user.png') }}" alt="Pengguna" class="nav-icon">
                     <span>Pengguna</span>
-                </button>
+                </a>
+                <!-- Menu Pemesanan -->
                 <a href="{{ route('pemesanan.index') }}" class="nav-button">
-                    <img src="{{ asset('../asset/script.png') }}" alt="Pemesanan" class="nav-icon">
+                    <img src="{{ asset('asset/script.png') }}" alt="Pemesanan" class="nav-icon">
                     <span>Pemesanan</span>
                 </a>
+                <!-- Menu Komputer -->
                 <a href="{{ route('komputer') }}" class="nav-button">
-                    <img src="{{ asset('../asset/computer.png') }}" alt="Komputer" class="nav-icon">
+                    <img src="{{ asset('asset/computer.png') }}" alt="Komputer" class="nav-icon">
                     <span>Komputer</span>
                 </a>
-            </div>
+            </nav>
         </aside>
 
-        
+        <!-- Area Kanan -->
         <div class="content-wrapper">
             
-            
+            <!-- Top Header -->
             <header class="top-header">
                 <div class="user-profile">
                     
                     <button type="button" class="btn-icon">
-                        <img src="{{ asset('../asset/notification.png') }}" alt="Notifikasi" class="header-icon">
+                        <img src="{{ asset('asset/notification.png') }}" alt="Notifikasi" class="header-icon">
                     </button>
 
-                    
                     <div class="profile-divider"></div>
-
-
 
                     <!-- Detail Profil User Dinamis dari Database -->
                     <div class="profile-dropdown-wrapper">
@@ -72,9 +70,8 @@
                         <!-- Dropdown Menu -->
                         <div class="profile-dropdown-menu" id="profileDropdown">
                             <div class="dropdown-header">
-                                {{-- Ganti src gambar sesuai kebutuhan Anda --}}
                                 <div class="dropdown-avatar-wrapper">
-                                    <img src="{{ asset('../asset/user.png') }}" alt="Avatar" class="dropdown-avatar-img">
+                                    <img src="{{ asset('asset/user.png') }}" alt="Avatar" class="dropdown-avatar-img">
                                 </div>
                                 <span class="dropdown-name">{{ Auth::user()->nama ?? Auth::user()->email }}</span>
                                 <span class="dropdown-role">Administrator</span>
@@ -91,44 +88,41 @@
                 </div>
             </header>
 
-            
+            <!-- Panel Utama -->
             <main class="main-content">
-                
                 
                 <div class="page-title">
                     <h1>Halo, {{ Auth::user()->nama ?? 'Admin' }} VortexPlay</h1>
                     <p>Pantau reservasi aktif dan status billing PC hari ini.</p>
                 </div>
 
-                
+                <!-- Statistik Cards -->
                 <section class="stats-grid">
-                    
                     <div class="stat-card">
                         <div class="stat-header">
-                            <img src="{{ asset('../asset/akar-icons_statistic-up.png') }}" alt="Statistik" class="stat-icon">
+                            <img src="{{ asset('asset/akar-icons_statistic-up.png') }}" alt="Statistik" class="stat-icon">
                         </div>
-                        <h3>Rp. {{ number_format($pendapatanHariIni, 0, ',', '.') }}</h3>
+                        <h3>Rp. {{ number_format($pendapatanHariIni ?? 0, 0, ',', '.') }}</h3>
                         <span class="stat-subtext">pendapatan hari ini</span>
                     </div>
 
-                    
                     <div class="stat-card">
                         <div class="stat-header">
                             <span>Pesanan Hari Ini</span>
-                            <img src="{{ asset('../asset/basil_invoice-outline.png') }}" alt="Pesanan" class="stat-icon">
+                            <img src="{{ asset('asset/basil_invoice-outline.png') }}" alt="Pesanan" class="stat-icon">
                         </div>
-                        <h3>{{ $totalTransaksiHariIni }} Transaksi</h3>
+                        <h3>{{ $totalTransaksiHariIni ?? 0 }} Transaksi</h3>
                         <span class="stat-subtext">Transaksi yang sudah tercatat</span>
                     </div>
                 </section>
 
-                
+                <!-- Tabel Pesanan Terbaru -->
                 <section class="table-card">
                     <div class="card-header">
                         <h2>Pesanan Terbaru</h2>
-                        <a href="#" class="see-all-link">
+                        <a href="{{ route('pemesanan.index') }}" class="see-all-link">
                             Lihat semua 
-                            <img src="{{ asset('../asset/bitcoin-icons_arrow-right-filled.png') }}" alt="Panah" class="link-icon">
+                            <img src="{{ asset('asset/bitcoin-icons_arrow-right-filled.png') }}" alt="Panah" class="link-icon">
                         </a>
                     </div>
 
@@ -145,7 +139,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($pesananTerbaru as $index => $pesanan)
+                                @forelse ($pesananTerbaru ?? [] as $index => $pesanan)
                                 <tr>
                                     <td>{{ $index + 1 }}.</td>
                                     <td>{{ $pesanan->user->nama ?? '-' }}</td>
@@ -175,6 +169,7 @@
 
     </div>
 
+    <!-- Script Dropdown Profile -->
     <script>
         function toggleDropdown() {
             const dropdown = document.getElementById('profileDropdown');

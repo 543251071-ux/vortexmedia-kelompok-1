@@ -4,56 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pemesanan - VortexPlay</title>
-    
-   
+
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    
-    <link rel="stylesheet" href="{{ asset('css/tampilan.css') }}">
+
+    <!-- Custom CSS Laravel -->
+    <link rel="stylesheet" href="{{ asset('css/pemesanan.css') }}">
 </head>
 <body>
 
     <div class="dashboard-container">
-        
-       
-        <aside class="siderbar-menu">
+
+        <!-- Sidebar Menu -->
+        <aside class="sidebar-menu">
             <div class="logo-container">
-                <img src="image/Desain_Tanpa_Judul__2_-removebg-preview.png" alt="Logo" class="Image"> 
+                <img src="{{ asset('asset/Desain_Tanpa_Judul__2_-removebg-preview.png') }}" alt="VortexPlay Logo" class="logo-img">
             </div>
 
-            <div class="menu-items">
+            <nav class="menu-items">
                 <a href="{{ route('dashboard') }}" class="nav-button">
-                    <img src="{{ asset('../asset/user.png') }}" alt="Pengguna" class="nav-icon">
+                    <img src="{{ asset('asset/user.png') }}" alt="Pengguna" class="nav-icon">
                     <span>Pengguna</span>
                 </a>
                 <a href="{{ route('pemesanan.index') }}" class="nav-button active" aria-current="page">
-                    <img src="{{ asset('../asset/script.png') }}" alt="Pemesanan" class="nav-icon">
+                    <img src="{{ asset('asset/script.png') }}" alt="Pemesanan" class="nav-icon">
                     <span>Pemesanan</span>
                 </a>
                 <a href="{{ route('komputer') }}" class="nav-button">
-                    <img src="{{ asset('../asset/computer.png') }}" alt="Komputer" class="nav-icon">
+                    <img src="{{ asset('asset/computer.png') }}" alt="Komputer" class="nav-icon">
                     <span>Komputer</span>
                 </a>
-            </div>
+            </nav>
         </aside>
 
-        
+        <!-- Area Kanan -->
         <div class="content-wrapper">
-            
-            
+
+            <!-- Top Header -->
             <header class="top-header">
                 <div class="user-profile">
-
                     <button type="button" class="btn-icon">
-                        <img src="image/notification.png" alt="Notifikasi" class="header-icon">
+                        <img src="{{ asset('asset/notification.png') }}" alt="Notifikasi" class="header-icon">
                     </button>
 
-                    
                     <div class="profile-divider"></div>
 
-                    
                     <div class="profile-dropdown-wrapper">
                         <div class="profile-info" id="profileToggle">
                             <i class="fa-solid fa-circle-user profile-avatar"></i>
@@ -64,7 +61,6 @@
                             <i class="fa-solid fa-chevron-down dropdown-icon" id="chevronIcon"></i>
                         </div>
 
-                       
                         <div class="profile-dropdown-menu" id="profileMenu">
                             <div class="dropdown-header">
                                 <i class="fa-solid fa-circle-user dropdown-avatar"></i>
@@ -76,20 +72,18 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </header>
 
-            
-            <main class="main-content">
-                
-                
+            <!-- Panel Utama -->
+            <main class="main-card">
+
                 <div class="page-title">
                     <h1>Pemesanan</h1>
                     <p>Kelola semua data pemesanan pelanggan dengan mudah</p>
                 </div>
 
-                
+                <!-- Kartu Tabel -->
                 <section class="table-card">
                     <div class="card-header">
                         <h2>Pesanan Terbaru</h2>
@@ -126,7 +120,7 @@
 
     </div>
 
-    
+    <!-- Script Dropdown Profile -->
     <script>
         const profileToggle = document.getElementById('profileToggle');
         const profileMenu = document.getElementById('profileMenu');
