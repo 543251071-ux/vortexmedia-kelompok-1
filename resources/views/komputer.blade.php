@@ -85,87 +85,35 @@
 
                 <!-- Container untuk Kotak-kotak PC -->
                 <div class="pc-grid-container">
-                    
-                    <!-- PC 1 -->
-                    <div class="pc-card">
+
+                    @forelse ($komputers as $komputer)
+                    <!-- PC {{ $komputer->nomor_komputer }} -->
+                    <div class="pc-card" id="pc-card-{{ $komputer->id_komputer }}">
                         <div class="pc-icon-wrapper">
                             <i class="fa-solid fa-desktop"></i>
                         </div>
-                        <h3>KOMPUTER 01</h3>
-                        <div class="status-text">Status <span class="status-value">KOSONG</span></div>
-                        
+                        <h3>KOMPUTER {{ str_pad($komputer->nomor_komputer, 2, '0', STR_PAD_LEFT) }}</h3>
+                        <div class="status-text">Status <span class="status-value">{{ strtoupper($komputer->status_komputer) }}</span></div>
+
                         <!-- Tombol dan Dropdown Status -->
                         <div class="status-action-wrapper">
                             <button type="button" class="btn-ubah" onclick="toggleStatusMenu(this)">UBAH</button>
                             <div class="status-dropdown">
                                 <div class="status-dropdown-header">Pilih Status</div>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-kosong"></span> Kosong</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-tersedia"></span> Tersedia</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-terpakai"></span> Terpakai</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-dipesan"></span> Dipesan</button>
+                                <form method="POST" action="{{ route('komputer.updateStatus', $komputer->id_komputer) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" name="status_komputer" value="kosong" class="status-item"><span class="dot dot-kosong"></span> Kosong</button>
+                                    <button type="submit" name="status_komputer" value="dipakai" class="status-item"><span class="dot dot-tersedia"></span> Tersedia / Dipakai</button>
+                                    <button type="submit" name="status_komputer" value="dipesan" class="status-item"><span class="dot dot-dipesan"></span> Dipesan</button>
+                                    <button type="submit" name="status_komputer" value="maintenance" class="status-item"><span class="dot dot-terpakai"></span> Maintenance</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-
-                    <!-- PC 2 -->
-                    <div class="pc-card">
-                        <div class="pc-icon-wrapper">
-                            <i class="fa-solid fa-desktop"></i>
-                        </div>
-                        <h3>KOMPUTER 02</h3>
-                        <div class="status-text">Status <span class="status-value">KOSONG</span></div>
-                        
-                        <div class="status-action-wrapper">
-                            <button type="button" class="btn-ubah" onclick="toggleStatusMenu(this)">UBAH</button>
-                            <div class="status-dropdown">
-                                <div class="status-dropdown-header">Pilih Status</div>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-kosong"></span> Kosong</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-tersedia"></span> Tersedia</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-terpakai"></span> Terpakai</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-dipesan"></span> Dipesan</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PC 3 -->
-                    <div class="pc-card">
-                        <div class="pc-icon-wrapper">
-                            <i class="fa-solid fa-desktop"></i>
-                        </div>
-                        <h3>KOMPUTER 03</h3>
-                        <div class="status-text">Status <span class="status-value">KOSONG</span></div>
-                        
-                        <div class="status-action-wrapper">
-                            <button type="button" class="btn-ubah" onclick="toggleStatusMenu(this)">UBAH</button>
-                            <div class="status-dropdown">
-                                <div class="status-dropdown-header">Pilih Status</div>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-kosong"></span> Kosong</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-tersedia"></span> Tersedia</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-terpakai"></span> Terpakai</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-dipesan"></span> Dipesan</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PC 4 -->
-                    <div class="pc-card">
-                        <div class="pc-icon-wrapper">
-                            <i class="fa-solid fa-desktop"></i>
-                        </div>
-                        <h3>KOMPUTER 04</h3>
-                        <div class="status-text">Status <span class="status-value">KOSONG</span></div>
-                        
-                        <div class="status-action-wrapper">
-                            <button type="button" class="btn-ubah" onclick="toggleStatusMenu(this)">UBAH</button>
-                            <div class="status-dropdown">
-                                <div class="status-dropdown-header">Pilih Status</div>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-kosong"></span> Kosong</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-tersedia"></span> Tersedia</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-terpakai"></span> Terpakai</button>
-                                <button type="button" class="status-item" onclick="pilihStatus(this)"><span class="dot dot-dipesan"></span> Dipesan</button>
-                            </div>
-                        </div>
-                    </div>
+                    @empty
+                    <p style="color: white; opacity: 0.6;">Belum ada data komputer.</p>
+                    @endforelse
 
                 </div>
 
@@ -204,16 +152,8 @@
             dropdown.classList.toggle('show');
         }
 
-        // Fungsi saat status dipilih
-        function pilihStatus(button) {
-            const statusText = button.textContent.trim();
-            const wrapper = button.closest('.status-action-wrapper');
-            const card = wrapper.closest('.pc-card');
-            const statusValue = card.querySelector('.status-value');
-            
-            statusValue.textContent = statusText.toUpperCase();
-            wrapper.querySelector('.status-dropdown').classList.remove('show');
-        }
+        // Fungsi saat status dipilih — sekarang menggunakan form submit ke server
+        // pilihStatus() tidak lagi dipakai karena tombol langsung submit form
 
         // Tutup semua dropdown jika klik di luar
         document.addEventListener('click', function (e) {

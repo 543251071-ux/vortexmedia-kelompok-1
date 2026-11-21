@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KomputerController;
 use App\Http\Controllers\Login;
+use App\Http\Controllers\PemesananController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use Illuminate\Http\Request;
@@ -34,9 +36,12 @@ Route::middleware(['auth'])->group(function () {
     // Halaman Dashboard / Pengguna
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Halaman Pemesanan & Komputer
-    Route::view('/pemesanan', 'pemesanan')->name('pemesanan.index');
-    Route::view('/komputer', 'komputer')->name('komputer');
+    // Halaman Pemesanan (tersambung ke tb_pemesanan)
+    Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
+
+    // Halaman Komputer (tersambung ke tb_komputer)
+    Route::get('/komputer', [KomputerController::class, 'index'])->name('komputer');
+    Route::patch('/komputer/{komputer}/status', [KomputerController::class, 'updateStatus'])->name('komputer.updateStatus');
 
     // Halaman Pelanggan / User (Vortex Play)
     Route::view('/home', 'home')->name('home');

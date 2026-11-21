@@ -102,14 +102,20 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse ($pemesanans as $index => $p)
                                 <tr>
-                                    <td>1.</td>
-                                    <td>Muhammad Zidan</td>
-                                    <td>COMPUTER 01</td>
-                                    <td>2 Jam</td>
-                                    <td>Pending</td>
-                                    <td>Rp10.000</td>
+                                    <td>{{ $index + 1 }}.</td>
+                                    <td>{{ $p->user->nama ?? '-' }}</td>
+                                    <td>KOMPUTER {{ str_pad($p->komputer->nomor_komputer ?? '-', 2, '0', STR_PAD_LEFT) }}</td>
+                                    <td>{{ $p->lama_pemesanan }} Jam</td>
+                                    <td>{{ ucfirst($p->status) }}</td>
+                                    <td>Rp{{ number_format($p->nominal, 0, ',', '.') }}</td>
                                 </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" style="text-align:center; padding: 20px; opacity: 0.6;">Belum ada data pemesanan.</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
