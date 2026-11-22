@@ -1,294 +1,183 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, rgba(0, 24, 34, 0.90), rgba(0, 34, 44, 0.93)), 
-                url('../asset/background1.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     min-height: 100vh;
     color: #ffffff;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 24px 16px;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* Ambient glow */
-body::before {
-    content: '';
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(0, 210, 255, 0.12) 0%, rgba(0, 210, 255, 0) 70%);
-    pointer-events: none;
-    z-index: 0;
+    justify-content: center;
+    background:
+        linear-gradient(180deg, rgba(3, 38, 50, 0.68) 0%, rgba(2, 27, 36, 0.78) 100%),
+        url('../asset/background1.jpeg') center center / cover no-repeat fixed;
+    background-color: #02232f;
+    padding: 24px;
 }
 
 .rent-container {
     width: 100%;
-    max-width: 530px;
-    position: relative;
-    z-index: 1;
+    max-width: 470px;
 }
 
-/* =========================================
-   RENT CARD
-   ========================================= */
 .rent-card {
-    background: linear-gradient(180deg, rgba(0, 75, 96, 0.48), rgba(0, 115, 142, 0.32));
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid rgba(0, 210, 255, 0.45);
+    background: rgba(13, 72, 90, 0.42);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1.5px solid rgba(255, 255, 255, 0.42);
     border-radius: 22px;
-    box-shadow: 0 12px 40px rgba(0, 15, 25, 0.55), inset 0 0 30px rgba(0, 210, 255, 0.10);
-    padding: 38px 36px 36px 36px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
+    padding: 34px 40px 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
 }
 
-/* Brand Header inside Card */
 .card-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 24px;
-    text-decoration: none;
-    align-self: flex-start;
-}
-
-.card-brand-icon {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 26px;
+    text-decoration: none;
+    margin-bottom: 18px;
+}
+
+.card-brand-img {
     height: 26px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    mix-blend-mode: lighten;
 }
 
-.card-brand-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: #ffffff;
-    filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.7));
-}
-
-.card-brand-text {
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    color: #ffffff;
-}
-
-/* Card Heading */
 .rent-header {
     text-align: center;
-    margin-bottom: 26px;
+    margin-bottom: 24px;
 }
 
 .rent-title {
-    font-size: 34px;
+    font-size: 32px;
     font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
+    margin-bottom: 4px;
 }
 
 .rent-subtitle {
-    font-size: 13.5px;
-    font-weight: 300;
-    color: rgba(225, 243, 250, 0.85);
-    line-height: 1.4;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-/* Form Groups */
+/* Alerts */
+.alert-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    margin-bottom: 16px;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.25);
+    border: 1px solid rgba(16, 185, 129, 0.6);
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.25);
+    border: 1px solid rgba(239, 68, 68, 0.6);
+}
+
+/* Form Elements */
 .rent-form {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    gap: 16px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
+    gap: 6px;
 }
 
 .form-label {
     font-size: 13px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 6px;
-    text-align: left;
+    font-weight: 500;
+    color: #ffffff;
 }
 
 .form-input {
     width: 100%;
-    height: 48px;
-    background: rgba(0, 36, 48, 0.45);
-    border: 1.5px solid rgba(0, 200, 240, 0.65);
-    border-radius: 10px;
-    padding: 0 16px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 8px;
     color: #ffffff;
-    font-size: 14px;
-    font-family: inherit;
+    font-size: 13.5px;
     outline: none;
-    transition: all 0.25s ease;
+    transition: all 0.2s ease;
 }
 
 .form-input::placeholder {
-    color: rgba(195, 225, 235, 0.5);
-    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .form-input:focus {
-    border-color: #00e5ff;
-    background: rgba(0, 48, 64, 0.6);
-    box-shadow: 0 0 14px rgba(0, 229, 255, 0.45);
+    border-color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
 }
 
-/* Checkbox Remember Me */
 .remember-row {
-    display: flex;
-    align-items: center;
-    margin: 8px 0 24px 0;
-    user-select: none;
+    margin-top: 2px;
 }
 
 .custom-checkbox-label {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.85);
+    gap: 8px;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
-    position: relative;
+    user-select: none;
 }
 
 .custom-checkbox-label input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 17px;
-    height: 17px;
-    border: 1.5px solid rgba(0, 210, 255, 0.75);
-    border-radius: 4px;
-    background: rgba(0, 36, 48, 0.6);
+    width: 15px;
+    height: 15px;
+    accent-color: #ffffff;
     cursor: pointer;
-    outline: none;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
 }
 
-.custom-checkbox-label input[type="checkbox"]:checked {
-    background: #00b4d8;
-    border-color: #00e5ff;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
-}
-
-.custom-checkbox-label input[type="checkbox"]:checked::after {
-    content: '✓';
-    font-size: 12px;
-    color: #ffffff;
-    font-weight: 700;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* Submit Button */
 .btn-submit-payment {
     width: 100%;
-    height: 48px;
-    background: rgba(0, 34, 46, 0.6);
-    border: 1.5px solid rgba(0, 210, 255, 0.8);
-    border-radius: 10px;
+    padding: 13px;
+    margin-top: 6px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 8px;
     color: #ffffff;
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    margin-bottom: 18px;
 }
 
 .btn-submit-payment:hover {
-    background: rgba(0, 176, 224, 0.25);
-    border-color: #00e5ff;
-    box-shadow: 0 0 18px rgba(0, 229, 255, 0.6);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.26);
+    border-color: #ffffff;
 }
 
-/* Back Link */
 .back-link {
     text-align: center;
+    margin-top: 4px;
 }
 
 .back-link a {
-    color: rgba(225, 245, 252, 0.85);
-    font-size: 13.5px;
-    text-decoration: underline;
-    transition: all 0.2s ease;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.2s;
 }
 
 .back-link a:hover {
-    color: #00e5ff;
-    text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
-}
-
-/* Alert notifications */
-.alert-box {
-    padding: 12px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.alert-success {
-    background: rgba(16, 185, 129, 0.2);
-    border: 1px solid rgba(16, 185, 129, 0.6);
-    color: #6ee7b7;
-}
-
-.alert-error {
-    background: rgba(239, 68, 68, 0.2);
-    border: 1px solid rgba(239, 68, 68, 0.6);
-    color: #fca5a5;
-}
-
-/* Responsive */
-@media (max-width: 580px) {
-    .rent-card {
-        padding: 28px 22px;
-        border-radius: 18px;
-    }
-
-    .rent-title {
-        font-size: 28px;
-    }
-
-    .btn-submit-payment {
-        font-size: 15px;
-    }
+    color: #ffffff;
+    text-decoration: underline;
 }

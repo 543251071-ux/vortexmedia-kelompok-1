@@ -23,13 +23,7 @@
         <!-- Top Navigation Bar -->
         <header class="top-navbar">
             <a href="{{ route('home') }}" class="brand-logo">
-                <span class="brand-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 3.5C4 2.67 4.9 2.16 5.6 2.58L20.4 11.08C21.1 11.48 21.1 12.52 20.4 12.92L5.6 21.42C4.9 21.84 4 21.33 4 20.5V3.5Z" />
-                        <circle cx="9" cy="12" r="3" fill="#011b24" />
-                    </svg>
-                </span>
-                <span class="brand-text">VORTEX PLAY</span>
+                <img src="{{ asset('asset/picture.png') }}" alt="Vortex Play" class="brand-logo-img">
             </a>
 
             <nav>
@@ -62,28 +56,23 @@
                             <i class="fa-solid fa-circle-user dropdown-avatar"></i>
                             <div class="dropdown-details">
                                 <span class="dropdown-name">{{ auth()->user()->nama ?? 'User' }}</span>
-                                <span class="dropdown-role">{{ auth()->user()->email ?? 'user@vortexplay.id' }}</span>
+                                <span class="dropdown-role">{{ ucfirst(auth()->user()->role ?? 'User') }}</span>
                             </div>
                         </div>
 
-                        <div class="dropdown-menu-links">
-                            @if(auth()->check() && auth()->user()->isAdmin())
+                        @if(auth()->check() && auth()->user()->isAdmin())
+                            <div class="dropdown-menu-links">
                                 <a href="{{ route('dashboard') }}" class="dropdown-link-item">
                                     <i class="fa-solid fa-gauge"></i>
                                     <span>Dashboard Admin</span>
                                 </a>
-                            @endif
-                            <a href="{{ route('rent') }}" class="dropdown-link-item">
-                                <i class="fa-solid fa-gamepad"></i>
-                                <span>Pesan Komputer</span>
-                            </a>
-                        </div>
+                            </div>
+                        @endif
 
                         <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                             @csrf
                             <button type="submit" class="btn-logout-action">
-                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                                <span>Log out</span>
+                                <span>Log Out</span>
                             </button>
                         </form>
                     </div>
@@ -125,6 +114,68 @@
             </section>
 
         </main>
+
+        <!-- Footer -->
+        <footer class="glass-footer">
+            <div class="footer-top">
+                <div class="footer-brand-col">
+                    <a href="{{ route('home') }}" class="brand-logo">
+                        <img src="{{ asset('asset/picture.png') }}" alt="Vortex Play" class="brand-logo-img">
+                    </a>
+                    <p class="footer-contact-text">
+                        Jika kamu memiliki pertanyaan silahkan Bertanya di Email<br>
+                        ini <a href="mailto:vortex.media@gmail.com">vortex.media@gmail.com</a>
+                    </p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links-grid">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#">Features</a></li>
+                            <li><a href="#">Pricing</a></li>
+                            <li><a href="#">Integrations</a></li>
+                            <li><a href="#">Changelog</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Support</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="{{ route('about') }}">About</a></li>
+                            <li><a href="#">Testimoni</a></li>
+                            <li><a href="#">Career</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 VortexMedia. All rights reserved.</p>
+                <div class="footer-legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookies Settings</a>
+                </div>
+            </div>
+        </footer>
 
     </div>
 

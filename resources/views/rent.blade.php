@@ -24,13 +24,7 @@
             
             <!-- Brand Logo at Top Left -->
             <a href="{{ route('home') }}" class="card-brand">
-                <span class="card-brand-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 3.5C4 2.67 4.9 2.16 5.6 2.58L20.4 11.08C21.1 11.48 21.1 12.52 20.4 12.92L5.6 21.42C4.9 21.84 4 21.33 4 20.5V3.5Z" />
-                        <circle cx="9" cy="12" r="3" fill="#011b24" />
-                    </svg>
-                </span>
-                <span class="card-brand-text">VORTEX PLAY</span>
+                <img src="{{ asset('asset/picture.png') }}" alt="Vortex Play" class="card-brand-img">
             </a>
 
             <!-- Header Titles -->
@@ -99,7 +93,7 @@
                 <!-- Remember Me Checkbox -->
                 <div class="remember-row">
                     <label class="custom-checkbox-label">
-                        <input type="checkbox" name="remember" value="1" checked>
+                        <input type="checkbox" name="remember" value="1">
                         <span>Remember Me</span>
                     </label>
                 </div>
