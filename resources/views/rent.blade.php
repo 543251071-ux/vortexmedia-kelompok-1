@@ -15,11 +15,15 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/rent.css') }}">
+
+    <!-- QRCode.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
     @php
         $isPaymentStep = session('success') && !$errors->any();
+        $paymentToken = session('payment_token', \Illuminate\Support\Str::random(32));
     @endphp
 
     <div class="rent-container">
@@ -120,9 +124,20 @@
 
                 <div class="qris-wrapper">
                     <div class="qris-box">
-                        <img src="{{ asset('asset/qris.png') }}" alt="QRIS Vortex Play" class="qris-image">
+                        {{-- QR dinamis di-generate oleh QRCode.js --}}
+                        <div id="qrcode"></div>
                     </div>
                 </div>
+
+                {{-- Status menunggu konfirmasi --}}
+                <p id="waitingText" style="color: rgba(255,255,255,0.4); font-size:0.8rem; margin-bottom: 12px; text-align:center;">
+                    Menunggu konfirmasi pembayaran...
+                </p>
+
+                {{-- [DEMO] Tombol simulasi bayar -- hapus saat production --}}
+                <button type="button" id="demoBtn" class="btn-glass-primary" onclick="simulasiDemo()">
+                    Konfirmasi Bayar
+                </button>
 
                 <button type="button" class="btn-glass-primary" onclick="showCancelConfirm()">
                     Cancel Payment
@@ -131,6 +146,9 @@
                 <div class="back-link">
                     <a href="{{ route('home') }}">Back to Homepage</a>
                 </div>
+
+                {{-- Token untuk polling --}}
+                <input type="hidden" id="paymentToken" value="{{ $paymentToken }}">
             </div>
 
             <!-- ==========================================
@@ -163,6 +181,85 @@
         const stepPayment = document.getElementById('stepPayment');
         const stepCancel = document.getElementById('stepCancel');
 
+        // ==========================================
+        // GENERATE QR CODE DINAMIS
+        // ==========================================
+        const paymentToken = document.getElementById('paymentToken').value;
+        const confirmUrl = `{{ url('/payment/confirm') }}/${paymentToken}`;
+
+        new QRCode(document.getElementById('qrcode'), {
+            text: confirmUrl,
+            width: 255,
+            height: 255,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M,
+        });
+
+        // ==========================================
+        // LISTEN PAYMENT — SSE (real-time) + fallback polling
+        // ==========================================
+        let pollingInterval = null;
+        let eventSource = null;
+
+        function startListening() {
+            const token = document.getElementById('paymentToken').value;
+
+            // Coba SSE dulu (lebih real-time, tidak perlu interval)
+            if (typeof EventSource !== 'undefined') {
+                eventSource = new EventSource(`/payment/stream/${token}`);
+
+                eventSource.onmessage = function (e) {
+                    const data = JSON.parse(e.data);
+
+                    if (data.status === 'paid') {
+                        eventSource.close();
+                        redirectToStruk(token);
+                    }
+
+                    if (data.status === 'timeout') {
+                        eventSource.close();
+                        // Fallback ke polling jika SSE timeout
+                        startPollingFallback(token);
+                    }
+                };
+
+                eventSource.onerror = function () {
+                    eventSource.close();
+                    // Fallback ke polling jika SSE error
+                    startPollingFallback(token);
+                };
+            } else {
+                // Browser tidak support SSE, langsung pakai polling
+                startPollingFallback(token);
+            }
+        }
+
+        function startPollingFallback(token) {
+            pollingInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`/payment/status/${token}`);
+                    const data = await res.json();
+
+                    if (data.status === 'paid') {
+                        clearInterval(pollingInterval);
+                        redirectToStruk(token);
+                    }
+                } catch (e) {
+                    // Abaikan error jaringan, coba lagi
+                }
+            }, 3000);
+        }
+
+        function redirectToStruk(token) {
+            window.location.href = `/struk/${token}`;
+        }
+
+        // Mulai listening jika halaman payment langsung tampil
+        if (stepPayment && !stepPayment.classList.contains('hidden')) {
+            startListening();
+        }
+
         // Dari halaman Payment -> masuk ke konfirmasi Batalkan
         function showCancelConfirm() {
             stepPayment.classList.add('hidden');
@@ -177,10 +274,69 @@
 
         // Klik "Konfirmasi" pada konfirmasi -> batalkan pembayaran & kembali ke form Rent
         function confirmCancelPayment() {
+            if (pollingInterval) { clearInterval(pollingInterval); }
+            if (eventSource) { eventSource.close(); }
             stepCancel.classList.add('hidden');
             stepRent.classList.remove('hidden');
         }
+
+        // ==========================================
+        // [DEMO] Simulasi konfirmasi pembayaran dari browser
+        // Hapus fungsi ini saat production
+        // ==========================================
+        async function simulasiDemo() {
+            const token = document.getElementById('paymentToken').value;
+            const btn   = document.getElementById('demoBtn');
+
+            btn.disabled    = true;
+            btn.textContent = '⏳ Memproses...';
+
+            try {
+                await fetch(`/payment/confirm/${token}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type'  : 'application/json',
+                        'X-CSRF-TOKEN'  : '{{ csrf_token() }}',
+                    },
+                });
+                // SSE/polling akan mendeteksi perubahan & redirect otomatis
+                // tapi redirect langsung juga sebagai fallback cepat
+                redirectToStruk(token);
+            } catch (e) {
+                btn.disabled    = false;
+                btn.textContent = '⚡ Demo: Konfirmasi Bayar';
+                alert('Gagal, coba lagi.');
+            }
+        }
     </script>
+
+    <style>
+        /* [DEMO] Tombol simulasi — hapus saat production */
+        .btn-demo {
+            width: 100%;
+            padding: 11px;
+            margin-bottom: 10px;
+            background: transparent;
+            border: 1px dashed rgba(255, 220, 50, 0.5);
+            border-radius: 10px;
+            color: rgba(255, 220, 50, 0.8);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+        }
+        .btn-demo:hover {
+            background: rgba(255, 220, 50, 0.08);
+            border-color: rgba(255, 220, 50, 0.8);
+            color: rgba(255, 220, 50, 1);
+        }
+        .btn-demo:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    </style>
 
 </body>
 </html>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KomputerController;
 use App\Http\Controllers\Login;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
@@ -48,6 +49,23 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/rent', 'rent')->name('rent');
     Route::view('/about', 'about')->name('about');
 
+    // ==========================================
+    // PAYMENT ROUTES
+    // ==========================================
+
+    // Halaman konfirmasi di HP (dari scan QR) — tidak perlu auth agar bisa dibuka di HP
+    // Dibuat di dalam auth group agar token masih terlindungi session context
+
+    // Polling status pembayaran (dari layar komputer)
+    Route::get('/payment/status/{token}', [PaymentController::class, 'status'])->name('payment.status');
+
+    // SSE stream status pembayaran (alternatif real-time)
+    Route::get('/payment/stream/{token}', [PaymentController::class, 'stream'])->name('payment.stream');
+
+    // Halaman struk setelah pembayaran berhasil
+    Route::get('/struk/{token?}', [PaymentController::class, 'struk'])->name('struk');
+    Route::get('/payment/struk/{token}', [PaymentController::class, 'struk'])->name('payment.struk');
+
     // Form Rent Booking
     Route::post('/rent', function (Request $request) {
         $validated = $request->validate([
@@ -63,7 +81,13 @@ Route::middleware(['auth'])->group(function () {
             $user->save();
         }
 
-        return redirect()->route('rent')->with('success', 'Data pemesanan slot bermain berhasil disimpan! Silakan lanjutkan pembayaran.');
+        // Generate token pembayaran unik
+        $token = PaymentController::generateToken();
+
+        return redirect()->route('rent')->with([
+            'success' => 'Data pemesanan slot bermain berhasil disimpan! Silakan lanjutkan pembayaran.',
+            'payment_token' => $token,
+        ]);
     })->name('rent.submit');
 });
 
@@ -71,6 +95,12 @@ Route::middleware(['auth'])->group(function () {
 // Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 //     // Masukkan route yang benar-benar rahasia admin di sini nanti
 // });
+
+// ==========================================
+// PAYMENT CONFIRM — Tanpa auth (dibuka di HP setelah scan QR)
+// ==========================================
+Route::get('/payment/confirm/{token}', [PaymentController::class, 'confirmPage'])->name('payment.confirm.page');
+Route::post('/payment/confirm/{token}', [PaymentController::class, 'confirm'])->name('payment.confirm');
 
 // 3. Route terproteksi untuk USER biasa (alias)
 Route::middleware(['auth', UserMiddleware::class])->group(function () {
