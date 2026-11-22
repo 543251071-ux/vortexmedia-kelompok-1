@@ -1,5 +1,5 @@
 /* =========================================
-   1. CSS UTAMA (Diambil dari halaman Pemesanan)
+   1. CSS UTAMA
    ========================================= */
 * {
     margin: 0;
@@ -271,18 +271,48 @@ body {
     flex: 1;
 }
 
+.page-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
 .page-title h1 {
     font-size: 24px;
     font-weight: 700;
     color: #ffffff;
-    padding-left: 10px; 
 }
 
 .page-title p {
     color: rgba(255, 255, 255, 0.75);
     font-size: 13px;
     margin-top: 4px;
-    padding-left: 10px;
+}
+
+/* Tombol Ikon (+) Tambah Komputer */
+.btn-add-komputer {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-add-komputer img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    display: block;
+}
+
+.btn-add-komputer:hover {
+    transform: scale(1.06);
+    opacity: 0.9;
 }
 
 /* =========================================
@@ -301,6 +331,7 @@ body {
 @media (max-width: 900px) { .pc-grid-container { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .pc-grid-container { grid-template-columns: 1fr; } }
 
+/* Card biasa tanpa efek menyala saat hover */
 .pc-card {
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 15px;
@@ -310,14 +341,7 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    transition: all 0.3s ease;
-    position: relative; /* Penting untuk posisi dropdown */
-}
-
-.pc-card:hover {
-    background: rgba(0, 176, 224, 0.15);
-    border-color: rgba(0, 210, 255, 0.8);
-    box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+    position: relative;
 }
 
 .pc-icon-wrapper {
@@ -369,31 +393,37 @@ body {
     background: #00d4ff;
 }
 
-/* Pop-up Menu Status (MUNCUL KE SAMPING KANAN & NAIK KE ATAS) */
+/* Pop-up Menu Status + Kotak Deskripsi */
 .status-dropdown {
     position: absolute;
-    top: -60px; /* <-- DIUBAH: Nilai negatif agar naik ke atas */
-    left: calc(100% + 10px); 
-    width: 160px; 
-    background: linear-gradient(180deg, rgba(0, 50, 68, 0.95), rgba(0, 85, 110, 0.95));
+    top: -110px;
+    left: calc(100% + 12px);
+    width: 185px;
+    background: linear-gradient(180deg, rgba(4, 48, 64, 0.97), rgba(4, 68, 90, 0.97));
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(0, 210, 255, 0.6);
+    border: 1px solid rgba(0, 210, 255, 0.55);
     border-radius: 12px;
-    padding: 15px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     z-index: 100;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    
-    /* Animasi Sembunyi */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
     opacity: 0;
     visibility: hidden;
     transform: translateX(-10px);
     transition: all 0.25s ease;
 }
 
-.status-dropdown.show {
+/* Agar card kolom ke-4 tidak terpotong ke kanan layar */
+.pc-card:nth-child(4n) .status-dropdown {
+    left: auto;
+    right: calc(100% + 12px);
+    transform: translateX(10px);
+}
+
+.status-dropdown.show,
+.pc-card:nth-child(4n) .status-dropdown.show {
     opacity: 1;
     visibility: visible;
     transform: translateX(0);
@@ -401,10 +431,16 @@ body {
 
 .status-dropdown-header {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     text-align: left;
-    margin-bottom: 5px;
-    font-weight: 500;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.status-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .status-item {
@@ -412,12 +448,12 @@ body {
     align-items: center;
     gap: 10px;
     width: 100%;
-    padding: 8px 10px;
+    padding: 7px 8px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: 8px;
     color: #ffffff;
-    font-size: 13px;
+    font-size: 12.5px;
     cursor: pointer;
     transition: background 0.2s ease;
     text-align: left;
@@ -428,14 +464,137 @@ body {
     border-color: rgba(0, 210, 255, 0.4);
 }
 
+/* Kotak Input Deskripsi di bawah pilihan status */
+.status-deskripsi-input {
+    width: 100%;
+    margin-top: 6px;
+    padding: 8px 10px;
+    background: rgba(1, 24, 33, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 11.5px;
+    line-height: 1.4;
+    resize: none;
+    outline: none;
+}
+
+.status-deskripsi-input::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.status-deskripsi-input:focus {
+    border-color: #00d4ff;
+}
+
 /* Warna Titik (Dot) */
 .dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     display: inline-block;
+    flex-shrink: 0;
 }
-.dot-kosong { background-color: #6c757d; } 
+.dot-kosong { background-color: #7d858c; } 
 .dot-tersedia { background-color: #28a745; } 
 .dot-terpakai { background-color: #dc3545; } 
-.dot-dipesan { background-color: #ffc107; } 
+.dot-dipesan { background-color: #ffc107; }
+
+/* =========================================
+   3. MODAL TAMBAH KOMPUTER
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 18, 26, 0.72);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 420px;
+    background: linear-gradient(180deg, rgba(6, 54, 70, 0.96), rgba(4, 42, 56, 0.98));
+    border: 1.5px solid rgba(114, 194, 214, 0.55);
+    border-radius: 16px;
+    padding: 28px 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+    transform: translateY(-10px);
+    transition: transform 0.25s ease;
+}
+
+.modal-overlay.show .modal-box {
+    transform: translateY(0);
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal-input,
+.modal-textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: rgba(2, 26, 36, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.modal-textarea {
+    height: 135px;
+    resize: none;
+}
+
+.modal-input::placeholder,
+.modal-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.modal-input:focus,
+.modal-textarea:focus {
+    border-color: #00d4ff;
+}
+
+.btn-modal-submit {
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px 0;
+    background: linear-gradient(90deg, rgba(0, 128, 165, 0.85), rgba(0, 162, 204, 0.85));
+    border: 1px solid rgba(114, 194, 214, 0.7);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-modal-submit:hover {
+    background: rgba(0, 185, 230, 0.95);
+}

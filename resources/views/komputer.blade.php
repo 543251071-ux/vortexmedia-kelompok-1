@@ -78,9 +78,16 @@
             <!-- Panel Utama -->
             <main class="main-card">
 
-                <div class="page-title">
-                    <h1>Komputer</h1>
-                    <p>Pantau komputer yang tersedia dengan lebih efisien</p>
+                <div class="page-header-row">
+                    <div class="page-title">
+                        <h1>Komputer</h1>
+                        <p>Pantau komputer yang tersedia dengan lebih efisien</p>
+                    </div>
+
+                    <!-- Tombol Logo (+) Tambah Komputer -->
+                    <button type="button" class="btn-add-komputer" id="openTambahModal" title="Tambah Komputer">
+                        <img src="{{ asset('asset/akar-icons_plus.png') }}" alt="Tambah Komputer">
+                    </button>
                 </div>
 
                 <!-- Container untuk Kotak-kotak PC -->
@@ -90,23 +97,37 @@
                     <!-- PC {{ $komputer->nomor_komputer }} -->
                     <div class="pc-card" id="pc-card-{{ $komputer->id_komputer }}">
                         <div class="pc-icon-wrapper">
-                            <i class="fa-solid fa-desktop"></i>
+                            <i class="fa-solid fa-computer"></i>
                         </div>
                         <h3>KOMPUTER {{ str_pad($komputer->nomor_komputer, 2, '0', STR_PAD_LEFT) }}</h3>
                         <div class="status-text">Status <span class="status-value">{{ strtoupper($komputer->status_komputer) }}</span></div>
 
-                        <!-- Tombol dan Dropdown Status -->
+                        <!-- Tombol dan Dropdown Status + Deskripsi -->
                         <div class="status-action-wrapper">
                             <button type="button" class="btn-ubah" onclick="toggleStatusMenu(this)">UBAH</button>
                             <div class="status-dropdown">
                                 <div class="status-dropdown-header">Pilih Status</div>
-                                <form method="POST" action="{{ route('komputer.updateStatus', $komputer->id_komputer) }}">
+                                <form method="POST" action="{{ route('komputer.updateStatus', $komputer->id_komputer) }}" class="status-form">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" name="status_komputer" value="kosong" class="status-item"><span class="dot dot-kosong"></span> Kosong</button>
-                                    <button type="submit" name="status_komputer" value="dipakai" class="status-item"><span class="dot dot-tersedia"></span> Tersedia / Dipakai</button>
-                                    <button type="submit" name="status_komputer" value="dipesan" class="status-item"><span class="dot dot-dipesan"></span> Dipesan</button>
-                                    <button type="submit" name="status_komputer" value="maintenance" class="status-item"><span class="dot dot-terpakai"></span> Maintenance</button>
+                                    <button type="submit" name="status_komputer" value="kosong" class="status-item">
+                                        <span class="dot dot-kosong"></span> Kosong
+                                    </button>
+                                    <button type="submit" name="status_komputer" value="dipakai" class="status-item">
+                                        <span class="dot dot-tersedia"></span> Tersedia
+                                    </button>
+                                    <button type="submit" name="status_komputer" value="maintenance" class="status-item">
+                                        <span class="dot dot-terpakai"></span> Terpakai
+                                    </button>
+                                    <button type="submit" name="status_komputer" value="dipesan" class="status-item">
+                                        <span class="dot dot-dipesan"></span> Dipesan
+                                    </button>
+
+                                    <textarea
+                                        name="deskripsi"
+                                        class="status-deskripsi-input"
+                                        placeholder="Deskripsi ..."
+                                        rows="3">{{ $komputer->deskripsi ?? '' }}</textarea>
                                 </form>
                             </div>
                         </div>
@@ -122,7 +143,31 @@
 
     </div>
 
-    <!-- Script Dropdown Profile & Status -->
+    <!-- Modal Pop-up Tambah Komputer -->
+    <div class="modal-overlay" id="tambahKomputerModal">
+        <div class="modal-box">
+            <h2 class="modal-title">Tambah Komputer</h2>
+            <form method="POST" action="{{ Route::has('komputer.store') ? route('komputer.store') : url('/komputer') }}" class="modal-form">
+                @csrf
+                <input
+                    type="text"
+                    name="nomor_komputer"
+                    class="modal-input"
+                    placeholder="Nama"
+                    required>
+
+                <textarea
+                    name="deskripsi"
+                    class="modal-textarea"
+                    placeholder="Spesifikasi Komputer"
+                    required></textarea>
+
+                <button type="submit" class="btn-modal-submit">Tambah</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Dropdown Profile, Status & Modal -->
     <script>
         // --- Script Profil ---
         const profileToggle = document.getElementById('profileToggle');
@@ -144,7 +189,6 @@
             const wrapper = button.parentElement;
             const dropdown = wrapper.querySelector('.status-dropdown');
             
-            // Tutup semua dropdown lain
             document.querySelectorAll('.status-dropdown').forEach(menu => {
                 if (menu !== dropdown) menu.classList.remove('show');
             });
@@ -152,10 +196,24 @@
             dropdown.classList.toggle('show');
         }
 
-        // Fungsi saat status dipilih — sekarang menggunakan form submit ke server
-        // pilihStatus() tidak lagi dipakai karena tombol langsung submit form
+        // --- Script Modal Tambah Komputer ---
+        const openTambahBtn = document.getElementById('openTambahModal');
+        const tambahModal = document.getElementById('tambahKomputerModal');
 
-        // Tutup semua dropdown jika klik di luar
+        if (openTambahBtn && tambahModal) {
+            openTambahBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                tambahModal.classList.add('show');
+            });
+
+            tambahModal.addEventListener('click', (e) => {
+                if (e.target === tambahModal) {
+                    tambahModal.classList.remove('show');
+                }
+            });
+        }
+
+        // Tutup semua dropdown / modal jika klik di luar atau tekan Esc
         document.addEventListener('click', function (e) {
             if (!profileToggle.contains(e.target) && !profileMenu.contains(e.target)) {
                 profileMenu.classList.remove('show');
@@ -166,6 +224,12 @@
                 document.querySelectorAll('.status-dropdown').forEach(menu => {
                     menu.classList.remove('show');
                 });
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && tambahModal) {
+                tambahModal.classList.remove('show');
             }
         });
     </script>
