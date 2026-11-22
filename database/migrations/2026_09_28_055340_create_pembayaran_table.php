@@ -19,8 +19,7 @@ return new class extends Migration
         $table->timestamp('dibayar_pada');
         $table->string('kode_qris', 255);
         $table->timestamps();
-
-        // Foreign Key Constraint
+        
         $table->foreign('id_pemesanan')->references('id_pemesanan')->on('tb_pemesanan')->onDelete('cascade');
     });
     }

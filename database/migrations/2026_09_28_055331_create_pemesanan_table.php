@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
        Schema::create('tb_pemesanan', function (Blueprint $table) {
-        $table->increments('id_pemesanan'); // INT AUTO_INCREMENT PRIMARY KEYa
-        $table->unsignedInteger('id_user'); // Foreign key ke tb_user
-        $table->unsignedInteger('computer_id'); // Foreign key ke tb_komputer
+        $table->increments('id_pemesanan');
+        $table->unsignedInteger('id_user'); 
+        $table->unsignedInteger('computer_id'); 
         $table->date('tanggal_pemesanan');
         $table->time('waktu_mulai');
         $table->integer('lama_pemesanan');
@@ -25,10 +25,9 @@ return new class extends Migration
             'diterima', 
             'ditolak', 
         ]);
-        $table->string('alasan_ditolak', 100)->nullable(); // NULLABLE
+        $table->string('alasan_ditolak', 100)->nullable();
         $table->timestamps();
 
-        // Foreign Key Constraints
         $table->foreign('id_user')->references('id_user')->on('tb_user')->onDelete('cascade');
         $table->foreign('computer_id')->references('id_komputer')->on('tb_komputer')->onDelete('cascade');
     });
