@@ -25,6 +25,10 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [Login::class, 'showLoginForm'])->name('login');
     Route::post('/login', [Login::class, 'login'])->name('login.perform');
+
+    // ✅ ROUTE REGISTER (BARU)
+    Route::get('/register', [Login::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [Login::class, 'register'])->name('register.perform');
 });
 
 // ==========================================

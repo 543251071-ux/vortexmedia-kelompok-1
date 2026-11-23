@@ -44,6 +44,11 @@
                 type="submit" style="margin-top: 20px; width: 100%; padding: 12px; cursor: pointer;">Login</button>
         </form>
 
+        <!-- ✅ Link menuju halaman Register -->
+        <div class="signup-text" style="font-size: 15px; margin-top: 30px; color: white;">
+            Belum punya akun? <a href="{{ route('register') }}">Klik Disini!</a>
+        </div>
+
         <script>
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('password');
