@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaran;
+use App\Models\Pemesanan;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +19,10 @@ class PaymentController extends Controller
      */
     public function confirmPage(string $token): View
     {
-        return view('payment.confirm', compact('token'));
+        $pemesananId = Cache::get("payment_pemesanan_{$token}");
+        $pemesanan = $pemesananId ? Pemesanan::with(['komputer', 'user'])->find($pemesananId) : null;
+
+        return view('payment.confirm', compact('token', 'pemesanan'));
     }
 
     /**
@@ -26,6 +31,23 @@ class PaymentController extends Controller
     public function confirm(Request $request, string $token): JsonResponse|RedirectResponse
     {
         Cache::put("payment_status_{$token}", 'paid', now()->addMinutes(30));
+        $pemesananId = Cache::get("payment_pemesanan_{$token}");
+        $pemesanan = $pemesananId ? Pemesanan::with('komputer')->find($pemesananId) : null;
+
+        if ($pemesanan) {
+            $pemesanan->update(['status' => 'diterima']);
+            $pemesanan->komputer()->update(['status_komputer' => 'dipesan']);
+
+            Pembayaran::updateOrCreate(
+                ['id_pemesanan' => $pemesanan->id_pemesanan],
+                [
+                    'nominal' => $pemesanan->nominal,
+                    'status_pembayaran' => 'diterima',
+                    'dibayar_pada' => now(),
+                    'kode_qris' => $token,
+                ],
+            );
+        }
 
         if (! $request->expectsJson()) {
             return redirect()->route('payment.struk', ['token' => $token]);
@@ -85,13 +107,26 @@ class PaymentController extends Controller
     /**
      * Halaman struk setelah pembayaran berhasil dikonfirmasi.
      */
-    public function struk(?string $token = null): View
+    public function struk(Request $request, ?string $token = null): View
     {
-        if ($token !== null && Cache::get("payment_status_{$token}") !== 'paid') {
-            abort(404);
+        if ($token !== null) {
+            if (Cache::get("payment_status_{$token}") !== 'paid') {
+                abort(404);
+            }
+
+            $pemesananId = Cache::get("payment_pemesanan_{$token}")
+                ?? Pembayaran::where('kode_qris', $token)->value('id_pemesanan');
+            $pemesanan = $pemesananId
+                ? Pemesanan::with(['komputer', 'user'])->findOrFail($pemesananId)
+                : abort(404);
+        } else {
+            $pemesanan = Pemesanan::with(['komputer', 'user'])
+                ->where('id_user', $request->user()->id_user)
+                ->latest('id_pemesanan')
+                ->first();
         }
 
-        return view('struk', compact('token'));
+        return view('struk', compact('token', 'pemesanan'));
     }
 
     /**

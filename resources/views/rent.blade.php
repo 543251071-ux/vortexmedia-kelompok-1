@@ -67,39 +67,50 @@
                             required>
                     </div>
 
-                    <!-- Phone Number Input -->
                     <div class="form-group">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input 
-                            type="tel" 
-                            id="phone" 
-                            name="nomor_telepon" 
-                            class="form-input" 
-                            placeholder="e.g., 081234567xxx" 
-                            value="{{ old('nomor_telepon', auth()->user()->nomor_telepon ?? '') }}" 
+                        <label for="computer_id" class="form-label">Computer</label>
+                        <select id="computer_id" name="computer_id" class="form-input" required>
+                            <option value="">Pilih komputer</option>
+                            @foreach ($komputers as $komputer)
+                                <option value="{{ $komputer->id_komputer }}" @selected(old('computer_id') == $komputer->id_komputer)>
+                                    Komputer {{ str_pad($komputer->nomor_komputer, 2, '0', STR_PAD_LEFT) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tanggal_pemesanan" class="form-label">Tanggal Pemesanan</label>
+                        <input
+                            type="date"
+                            id="tanggal_pemesanan"
+                            name="tanggal_pemesanan"
+                            class="form-input"
+                            min="{{ now()->toDateString() }}"
+                            value="{{ old('tanggal_pemesanan', now()->toDateString()) }}"
                             required>
                     </div>
 
-                    <!-- Email Address Input -->
+        
+
                     <div class="form-group">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            class="form-input" 
-                            placeholder="enter your email" 
-                            value="{{ old('email', auth()->user()->email ?? '') }}" 
-                            required>
+                        <label for="lama_pemesanan" class="form-label">Durasi Pemesanan</label>
+                        <select id="lama_pemesanan" name="lama_pemesanan" class="form-input" required>
+                            @for ($jam = 1; $jam <= 24; $jam++)
+                                <option value="{{ $jam }}" @selected((int) old('lama_pemesanan', 1) === $jam)>
+                                    {{ $jam }} Jam
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <div class="payment-total">
+                        <span>total Payment :</span>
+                        <strong id="totalPembayaran">7.000</strong>
                     </div>
 
                     <!-- Remember Me Checkbox -->
-                    <div class="remember-row">
-                        <label class="custom-checkbox-label">
-                            <input type="checkbox" name="remember" value="1">
-                            <span>Remember Me</span>
-                        </label>
-                    </div>
+                
 
                     <!-- Continue to Payment Button -->
                     <button type="submit" class="btn-glass-primary">
@@ -128,6 +139,13 @@
                         <div id="qrcode"></div>
                     </div>
                 </div>
+
+                @if ($pemesanan)
+                    <div class="payment-total payment-total-payment">
+                        <span>total Payment :</span>
+                        <strong>{{ number_format($pemesanan->nominal, 0, ',', '.') }}</strong>
+                    </div>
+                @endif
 
                 {{-- Tombol ini hanya membuka halaman struk --}}
                 <p id="waitingText" style="color: rgba(255,255,255,0.4); font-size:0.8rem; margin-bottom: 12px; text-align:center;">
@@ -180,6 +198,16 @@
         const stepRent = document.getElementById('stepRent');
         const stepPayment = document.getElementById('stepPayment');
         const stepCancel = document.getElementById('stepCancel');
+        const durationInput = document.getElementById('lama_pemesanan');
+        const totalPayment = document.getElementById('totalPembayaran');
+
+        function updateTotalPayment() {
+            const duration = Number(durationInput.value || 1);
+            totalPayment.textContent = new Intl.NumberFormat('id-ID').format(duration * 7000);
+        }
+
+        durationInput.addEventListener('change', updateTotalPayment);
+        updateTotalPayment();
 
         // ==========================================
         // GENERATE QR CODE DINAMIS

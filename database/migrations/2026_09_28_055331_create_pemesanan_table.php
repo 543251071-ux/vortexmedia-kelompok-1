@@ -11,26 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('tb_pemesanan', function (Blueprint $table) {
-        $table->increments('id_pemesanan');
-        $table->unsignedInteger('id_user'); 
-        $table->unsignedInteger('computer_id'); 
-        $table->date('tanggal_pemesanan');
-        $table->time('waktu_mulai');
-        $table->integer('lama_pemesanan');
-        $table->time('waktu_akhir');
-        $table->integer('nominal');
-        $table->enum('status', [
-            'pending', 
-            'diterima', 
-            'ditolak', 
-        ]);
-        $table->string('alasan_ditolak', 100)->nullable();
-        $table->timestamps();
+        Schema::create('tb_pemesanan', function (Blueprint $table) {
+            $table->increments('id_pemesanan');
+            $table->unsignedInteger('id_user');
+            $table->unsignedInteger('computer_id');
+            $table->date('tanggal_pemesanan');
+            $table->time('waktu_mulai');
+            $table->integer('lama_pemesanan');
+            $table->time('waktu_akhir');
+            $table->integer('nominal');
+            $table->enum('status', [
+                'pending',
+                'diterima',
+                'ditolak',
+            ]);
+            $table->string('alasan_ditolak', 100)->nullable();
+            $table->timestamps();
 
-        $table->foreign('id_user')->references('id_user')->on('tb_user')->onDelete('cascade');
-        $table->foreign('computer_id')->references('id_komputer')->on('tb_komputer')->onDelete('cascade');
-    });
+            $table->foreign('id_user')->references('id_user')->on('tb_user')->onDelete('cascade');
+            $table->foreign('computer_id')->references('id_komputer')->on('tb_komputer')->onDelete('cascade');
+        });
     }
 
     /**
@@ -38,7 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pemesanan');
+        Schema::dropIfExists('tb_pemesanan');
     }
 };
-    

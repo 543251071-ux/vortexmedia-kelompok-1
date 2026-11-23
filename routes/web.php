@@ -8,7 +8,6 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,11 +45,12 @@ Route::middleware(['auth'])->group(function () {
 
     // Halaman Komputer (tersambung ke tb_komputer)
     Route::get('/komputer', [KomputerController::class, 'index'])->name('komputer');
+    Route::post('/komputer', [KomputerController::class, 'store'])->name('komputer.store');
     Route::patch('/komputer/{komputer}/status', [KomputerController::class, 'updateStatus'])->name('komputer.updateStatus');
 
     // Halaman Pelanggan / User (Vortex Play)
     Route::view('/home', 'home')->name('home');
-    Route::view('/rent', 'rent')->name('rent');
+    Route::get('/rent', [PemesananController::class, 'rent'])->name('rent');
     Route::view('/about', 'about')->name('about');
 
     // ==========================================
@@ -70,28 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/struk/{token?}', [PaymentController::class, 'struk'])->name('struk');
 
     // Form Rent Booking
-    Route::post('/rent', function (Request $request) {
-        $validated = $request->validate([
-            'nama' => ['required', 'string', 'max:50'],
-            'nomor_telepon' => ['required', 'string', 'max:20'],
-            'email' => ['required', 'email', 'max:100'],
-        ]);
-
-        $user = auth()->user();
-        if ($user) {
-            $user->nama = $validated['nama'];
-            $user->nomor_telepon = $validated['nomor_telepon'];
-            $user->save();
-        }
-
-        // Generate token pembayaran unik
-        $token = PaymentController::generateToken();
-
-        return redirect()->route('rent')->with([
-            'success' => 'Data pemesanan slot bermain berhasil disimpan! Silakan lanjutkan pembayaran.',
-            'payment_token' => $token,
-        ]);
-    })->name('rent.submit');
+    Route::post('/rent', [PemesananController::class, 'store'])->name('rent.submit');
 });
 
 // 2. Route Khusus ADMIN (Jika nanti Anda butuh halaman khusus admin)

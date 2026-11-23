@@ -68,7 +68,10 @@
                                 <span class="dropdown-role">Administrator</span>
                             </div>
                             <div class="dropdown-body">
-                                <button type="button" class="btn-logout" onclick="logoutUser()">Log out</button>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-logout">Log out</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -145,9 +148,6 @@
             }
         });
 
-        function logoutUser() {
-            alert("Berhasil Log out!");
-        }
     </script>
 
 </body>

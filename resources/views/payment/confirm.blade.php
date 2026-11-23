@@ -210,7 +210,9 @@
 
             <div class="amount-box">
                 <div class="amount-label">Total Pembayaran</div>
-                <div class="amount-value">Demo Payment</div>
+                <div class="amount-value">
+                    Rp {{ number_format($pemesanan->nominal ?? 0, 0, ',', '.') }}
+                </div>
             </div>
 
             <button class="btn-confirm" id="confirmBtn" onclick="doConfirm()">

@@ -68,7 +68,10 @@
                                 <span class="dropdown-role">Administrator</span>
                             </div>
                             <div class="dropdown-body">
-                                <button type="button" class="btn-logout" onclick="logoutUser()">Log out</button>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn-logout">Log out</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -89,6 +92,11 @@
                         <img src="{{ asset('asset/akar-icons_plus.png') }}" alt="Tambah Komputer">
                     </button>
                 </div>
+                @if (session('success'))
+                    <div class="page-flash-success" role="status">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
                 <!-- Container untuk Kotak-kotak PC -->
                 <div class="pc-grid-container">
@@ -147,20 +155,31 @@
     <div class="modal-overlay" id="tambahKomputerModal">
         <div class="modal-box">
             <h2 class="modal-title">Tambah Komputer</h2>
-            <form method="POST" action="{{ Route::has('komputer.store') ? route('komputer.store') : url('/komputer') }}" class="modal-form">
+            @if ($errors->any())
+                <div class="modal-error" role="alert">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+            @if (session('success'))
+                <div class="modal-success" role="status">
+                    {{ session('success') }}
+                </div>
+            @endif
+            <form method="POST" action="{{ route('komputer.store') }}" class="modal-form">
                 @csrf
                 <input
                     type="text"
                     name="nomor_komputer"
                     class="modal-input"
-                    placeholder="Nama"
+                    placeholder="Nomor komputer (contoh: 6)"
+                    value="{{ old('nomor_komputer') }}"
                     required>
 
                 <textarea
                     name="deskripsi"
                     class="modal-textarea"
                     placeholder="Spesifikasi Komputer"
-                    required></textarea>
+                    required>{{ old('deskripsi') }}</textarea>
 
                 <button type="submit" class="btn-modal-submit">Tambah</button>
             </form>
@@ -179,10 +198,6 @@
             profileMenu.classList.toggle('show');
             chevronIcon.classList.toggle('rotate');
         });
-
-        function logoutUser() {
-            alert("Berhasil Log out!");
-        }
 
         // --- Script Dropdown Status PC ---
         function toggleStatusMenu(button) {
@@ -211,6 +226,10 @@
                     tambahModal.classList.remove('show');
                 }
             });
+
+            @if ($errors->any())
+            tambahModal.classList.add('show');
+            @endif
         }
 
         // Tutup semua dropdown / modal jika klik di luar atau tekan Esc

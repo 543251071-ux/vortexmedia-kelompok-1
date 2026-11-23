@@ -150,7 +150,7 @@
                                                 {{ ucfirst($pesanan->status) }}
                                             </span>
                                         </td>
-                                        <td class="text-center"><button type="button" class="btn-action">Aksi</button></td>
+                                        <!--  -->
                                     </tr>
                                     @empty
                                     <tr>

@@ -11,7 +11,6 @@ class Pembayaran extends Model
 
     protected $fillable = [
         'id_pemesanan',
-        'id_transaksi',
         'nominal',
         'status_pembayaran', // pending, settlement, expire, cancel
         'dibayar_pada',

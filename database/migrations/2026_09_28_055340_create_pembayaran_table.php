@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_pembayaran', function (Blueprint $table) {
-        $table->increments('id'); 
-        $table->integer('id_transaksi');
-        $table->integer('nominal');
-        $table->enum('status_pembayaran', ['pending', 'diterima', 'ditolak']);
-        $table->timestamp('dibayar_pada');
-        $table->string('kode_qris', 255);
-        $table->timestamps();
-        
-        $table->foreign('id_pemesanan')->references('id_pemesanan')->on('tb_pemesanan')->onDelete('cascade');
-    });
+            $table->increments('id');
+            $table->unsignedInteger('id_pemesanan');
+            $table->integer('nominal');
+            $table->enum('status_pembayaran', ['pending', 'diterima', 'ditolak']);
+            $table->timestamp('dibayar_pada');
+            $table->string('kode_qris', 255);
+            $table->timestamps();
+
+            $table->foreign('id_pemesanan')->references('id_pemesanan')->on('tb_pemesanan')->onDelete('cascade');
+        });
     }
 
     /**
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayaran');
+        Schema::dropIfExists('tb_pembayaran');
     }
 };
