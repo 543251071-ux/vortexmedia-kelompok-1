@@ -19,6 +19,12 @@
         <h1>Welcome back!</h1>
         <p>Please log in before using our website.</p>
 
+        @if (session('status'))
+            <div role="status" style="color: #155724; background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                {{ session('status') }}
+            </div>
+        @endif
+
         @if ($errors->any())
             <div style="color: #ff4d4d; background: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
                 {{ $errors->first() }}

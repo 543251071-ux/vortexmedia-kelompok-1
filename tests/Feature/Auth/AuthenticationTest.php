@@ -11,6 +11,7 @@ test('login screen can be rendered', function () {
     $response->assertSee('name="_token"', false);
     $response->assertSee('name="email"', false);
     $response->assertSee('name="password"', false);
+    $response->assertSee('href="'.route('register').'"', false);
 });
 
 test('users can authenticate using email', function () {

@@ -229,7 +229,7 @@
             <div class="success-text">Pembayaran Dikonfirmasi!</div>
             <p class="success-sub">Pembayaran telah berhasil.</p>
             <div style="margin-top: 20px;">
-                <a href="{{ url('/struk') }}/{{ $token }}" class="btn-confirm" style="display: inline-block; text-decoration: none; text-align: center;">
+                <a id="receiptLink" href="{{ route('payment.struk', ['token' => $token]) }}" class="btn-confirm" style="display: inline-block; text-decoration: none; text-align: center;">
                     Lihat Struk Pembayaran
                 </a>
             </div>
@@ -253,14 +253,14 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             })
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'paid') {
-                    document.getElementById('defaultState').style.display = 'none';
-                    document.getElementById('successState').classList.add('visible');
+                    window.location.href = document.getElementById('receiptLink').href;
                 }
             })
             .catch(() => {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KomputerController;
 use App\Http\Controllers\Login;
@@ -26,9 +27,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [Login::class, 'showLoginForm'])->name('login');
     Route::post('/login', [Login::class, 'login'])->name('login.perform');
 
-    // ✅ ROUTE REGISTER (BARU)
-    Route::get('/register', [Login::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [Login::class, 'register'])->name('register.perform');
+    Route::view('/register', 'regiter')->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.perform');
 });
 
 // ==========================================
@@ -68,7 +68,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Halaman struk setelah pembayaran berhasil
     Route::get('/struk/{token?}', [PaymentController::class, 'struk'])->name('struk');
-    Route::get('/payment/struk/{token}', [PaymentController::class, 'struk'])->name('payment.struk');
 
     // Form Rent Booking
     Route::post('/rent', function (Request $request) {
@@ -105,6 +104,7 @@ Route::middleware(['auth'])->group(function () {
 // ==========================================
 Route::get('/payment/confirm/{token}', [PaymentController::class, 'confirmPage'])->name('payment.confirm.page');
 Route::post('/payment/confirm/{token}', [PaymentController::class, 'confirm'])->name('payment.confirm');
+Route::get('/payment/struk/{token}', [PaymentController::class, 'struk'])->name('payment.struk');
 
 // 3. Route terproteksi untuk USER biasa (alias)
 Route::middleware(['auth', UserMiddleware::class])->group(function () {

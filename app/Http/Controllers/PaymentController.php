@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -21,9 +23,13 @@ class PaymentController extends Controller
     /**
      * Proses konfirmasi pembayaran dari HP — tandai token sebagai paid.
      */
-    public function confirm(string $token): JsonResponse
+    public function confirm(Request $request, string $token): JsonResponse|RedirectResponse
     {
         Cache::put("payment_status_{$token}", 'paid', now()->addMinutes(30));
+
+        if (! $request->expectsJson()) {
+            return redirect()->route('payment.struk', ['token' => $token]);
+        }
 
         return response()->json(['status' => 'paid']);
     }
@@ -81,6 +87,10 @@ class PaymentController extends Controller
      */
     public function struk(?string $token = null): View
     {
+        if ($token !== null && Cache::get("payment_status_{$token}") !== 'paid') {
+            abort(404);
+        }
+
         return view('struk', compact('token'));
     }
 

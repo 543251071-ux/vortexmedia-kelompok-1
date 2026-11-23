@@ -25,24 +25,38 @@
             </div>
         @endif
 
-        <form action="{{ route('login.perform') }}" method="POST">
+        <form action="{{ route('register.perform') }}" method="POST">
             @csrf
+
+            <label for="name">Name</label>
+            <div class="input-box">
+                <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Masukkan nama..." required maxlength="40" autocomplete="name" class="UsernameText">
+            </div>
 
             <label for="email">Email</label>
             <div class="input-box">
-                <input type="text" id="email" name="email" value="{{ old('email') }}" placeholder="Masukan Email..." required maxlength="21" autocomplete="username" class="UsernameText">
+                <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Masukan Email..." required maxlength="100" autocomplete="username" class="UsernameText">
                 <i class="fa-regular fa-user input-icon"></i>
             </div>
 
             <label for="password">Password</label>
             <div class="input-box">
-                <input type="password" id="password" name="password" placeholder="Masukkan Password..." required maxlength="19" autocomplete="current-password" class="PasswordText">
+                <input type="password" id="password" name="password" placeholder="Masukkan Password..." required autocomplete="new-password" class="PasswordText">
                 <i class="fa-regular fa-eye-slash input-icon" id="togglePassword" style="cursor: pointer;"></i>
             </div>
 
+            <label for="password_confirmation">Confirm Password</label>
+            <div class="input-box">
+                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Ulangi password..." required autocomplete="new-password" class="PasswordText">
+            </div>
+
             <button class="btn-login"
-                type="submit" style="margin-top: 20px; width: 100%; padding: 12px; cursor: pointer;">Login</button>
+                type="submit" style="margin-top: 20px; width: 100%; padding: 12px; cursor: pointer;">Register</button>
         </form>
+
+        <div class="signup-text" style="font-size: 15px; margin-top: 20px; color: white;">
+            Sudah punya akun? <a href="{{ route('login') }}">Login</a>
+        </div>
 
         <script>
             const togglePassword = document.getElementById('togglePassword');

@@ -129,15 +129,15 @@
                     </div>
                 </div>
 
-                {{-- Status menunggu konfirmasi --}}
+                {{-- Tombol ini hanya membuka halaman struk --}}
                 <p id="waitingText" style="color: rgba(255,255,255,0.4); font-size:0.8rem; margin-bottom: 12px; text-align:center;">
-                    Menunggu konfirmasi pembayaran...
+                    Klik tombol untuk membuka halaman struk.
                 </p>
 
-                {{-- [DEMO] Tombol simulasi bayar -- hapus saat production --}}
-                <button type="button" id="demoBtn" class="btn-glass-primary" onclick="simulasiDemo()">
+                {{-- Tombol menuju halaman struk --}}
+                <a href="{{ route('struk') }}" class="btn-glass-primary" style="display: block; text-align: center; text-decoration: none;">
                     Konfirmasi Bayar
-                </button>
+                </a>
 
                 <button type="button" class="btn-glass-primary" onclick="showCancelConfirm()">
                     Cancel Payment
@@ -147,7 +147,7 @@
                     <a href="{{ route('home') }}">Back to Homepage</a>
                 </div>
 
-                {{-- Token untuk polling --}}
+                {{-- Token untuk QR code --}}
                 <input type="hidden" id="paymentToken" value="{{ $paymentToken }}">
             </div>
 
@@ -196,70 +196,6 @@
             correctLevel: QRCode.CorrectLevel.M,
         });
 
-        // ==========================================
-        // LISTEN PAYMENT — SSE (real-time) + fallback polling
-        // ==========================================
-        let pollingInterval = null;
-        let eventSource = null;
-
-        function startListening() {
-            const token = document.getElementById('paymentToken').value;
-
-            // Coba SSE dulu (lebih real-time, tidak perlu interval)
-            if (typeof EventSource !== 'undefined') {
-                eventSource = new EventSource(`/payment/stream/${token}`);
-
-                eventSource.onmessage = function (e) {
-                    const data = JSON.parse(e.data);
-
-                    if (data.status === 'paid') {
-                        eventSource.close();
-                        redirectToStruk(token);
-                    }
-
-                    if (data.status === 'timeout') {
-                        eventSource.close();
-                        // Fallback ke polling jika SSE timeout
-                        startPollingFallback(token);
-                    }
-                };
-
-                eventSource.onerror = function () {
-                    eventSource.close();
-                    // Fallback ke polling jika SSE error
-                    startPollingFallback(token);
-                };
-            } else {
-                // Browser tidak support SSE, langsung pakai polling
-                startPollingFallback(token);
-            }
-        }
-
-        function startPollingFallback(token) {
-            pollingInterval = setInterval(async () => {
-                try {
-                    const res = await fetch(`/payment/status/${token}`);
-                    const data = await res.json();
-
-                    if (data.status === 'paid') {
-                        clearInterval(pollingInterval);
-                        redirectToStruk(token);
-                    }
-                } catch (e) {
-                    // Abaikan error jaringan, coba lagi
-                }
-            }, 3000);
-        }
-
-        function redirectToStruk(token) {
-            window.location.href = `/struk/${token}`;
-        }
-
-        // Mulai listening jika halaman payment langsung tampil
-        if (stepPayment && !stepPayment.classList.contains('hidden')) {
-            startListening();
-        }
-
         // Dari halaman Payment -> masuk ke konfirmasi Batalkan
         function showCancelConfirm() {
             stepPayment.classList.add('hidden');
@@ -274,40 +210,10 @@
 
         // Klik "Konfirmasi" pada konfirmasi -> batalkan pembayaran & kembali ke form Rent
         function confirmCancelPayment() {
-            if (pollingInterval) { clearInterval(pollingInterval); }
-            if (eventSource) { eventSource.close(); }
             stepCancel.classList.add('hidden');
             stepRent.classList.remove('hidden');
         }
 
-        // ==========================================
-        // [DEMO] Simulasi konfirmasi pembayaran dari browser
-        // Hapus fungsi ini saat production
-        // ==========================================
-        async function simulasiDemo() {
-            const token = document.getElementById('paymentToken').value;
-            const btn   = document.getElementById('demoBtn');
-
-            btn.disabled    = true;
-            btn.textContent = '⏳ Memproses...';
-
-            try {
-                await fetch(`/payment/confirm/${token}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type'  : 'application/json',
-                        'X-CSRF-TOKEN'  : '{{ csrf_token() }}',
-                    },
-                });
-                // SSE/polling akan mendeteksi perubahan & redirect otomatis
-                // tapi redirect langsung juga sebagai fallback cepat
-                redirectToStruk(token);
-            } catch (e) {
-                btn.disabled    = false;
-                btn.textContent = '⚡ Demo: Konfirmasi Bayar';
-                alert('Gagal, coba lagi.');
-            }
-        }
     </script>
 
     <style>
